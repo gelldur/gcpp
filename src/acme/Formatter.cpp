@@ -71,18 +71,16 @@ std::string formatTime(long long time)
 	return buffer;
 }
 
-std::string formatTimeWithoutMilliseconds(long long time)
+std::string formatTimeWithoutMilliseconds(std::chrono::seconds time)
 {
-	milliseconds myTime(time);
+	hours hoursTime = duration_cast<hours>(time);
+	time -= duration_cast<seconds>(hoursTime);
 
-	hours hoursTime = duration_cast<hours>(myTime);
-	myTime -= duration_cast<milliseconds>(hoursTime);
+	minutes minutesTime = duration_cast<minutes>(time);
+	time -= duration_cast<seconds>(minutesTime);
 
-	minutes minutesTime = duration_cast<minutes>(myTime);
-	myTime -= duration_cast<milliseconds>(minutesTime);
-
-	seconds secondsTime = duration_cast<seconds>(myTime);
-	myTime -= duration_cast<milliseconds>(secondsTime);
+	seconds secondsTime = duration_cast<seconds>(time);
+	time -= secondsTime;
 
 	char buffer[32];
 

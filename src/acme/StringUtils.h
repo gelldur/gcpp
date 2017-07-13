@@ -46,8 +46,10 @@ inline bool endsWith(const std::string& value, const std::string& ending)
 
 float fuzzyCompare(const std::string& pattern, const std::string& sample);
 
-std::vector<std::string>& split(const std::string& s, char delim, std::vector<std::string>& elems);
+std::vector<std::string>& split(const std::string& string, char delim, std::vector<std::string>& elements);
 
-std::vector<std::string> split(const std::string& s, char delim);
+std::vector<std::string> split(const std::string& string, char delim);
+
+void replaceAll(std::string& inString, const std::string& fromWhat, const std::string& toWhat);
 
 }

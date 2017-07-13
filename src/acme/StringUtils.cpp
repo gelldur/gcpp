@@ -69,4 +69,18 @@ std::vector<std::string> split(const std::string& s, char delim)
 	return elems;
 }
 
+void replaceAll(std::string& inString, const std::string& fromWhat, const std::string& toWhat)
+{
+	if (fromWhat.empty())
+	{
+		return;
+	}
+	size_t position = 0;
+	while ((position = inString.find(fromWhat, position)) != std::string::npos)
+	{
+		inString.replace(position, fromWhat.length(), toWhat);
+		position += toWhat.length();
+	}
+}
+
 }

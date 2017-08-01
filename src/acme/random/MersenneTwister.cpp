@@ -6,6 +6,7 @@
 
 MersenneTwister::MersenneTwister()
 {
+	initialize(10);
 }
 
 MersenneTwister::MersenneTwister(unsigned int seed)

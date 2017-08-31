@@ -7,18 +7,19 @@
 #pragma once
 
 #include <limits>
+#include <cstdint>
 
 class MersenneTwister
 {
 public:
 
-	MersenneTwister();
-	MersenneTwister(unsigned int seed);
+	explicit MersenneTwister();
+	explicit MersenneTwister(std::uint32_t seed);
 
-	void initialize(unsigned int seed);
+	void initialize(std::uint32_t seed);
 	unsigned int extract();
 
-	using result_type = unsigned int;
+	using result_type = std::uint32_t;
 
 	static constexpr result_type min()
 	{
@@ -36,7 +37,7 @@ public:
 	}
 
 private:
-	unsigned int twist();
-	unsigned int _x[624];
-	signed int _index;
+	std::uint32_t twist();
+	std::uint32_t _x[624];
+	std::uint32_t _index;
 };

@@ -53,7 +53,7 @@ TEST(MersenneTwisterTest, simpleGeneratorTestWithDistribution)
 	MersenneTwister mersenneTwister;
 
 	mersenneTwister.initialize(100);
-
+	//TODO FIXME uniform_int_distribution isn't cross platform solution
 	std::uniform_int_distribution<> distribution(0, 10);
 	EXPECT_EQ(5, distribution(mersenneTwister));
 

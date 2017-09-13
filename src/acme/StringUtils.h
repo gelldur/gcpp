@@ -28,9 +28,15 @@ inline std::string& rtrim(std::string& s)
 }
 
 // trim from both ends
-inline std::string& trim(std::string& s)
+inline std::string& trim(std::string& string)
 {
-	return ltrim(rtrim(s));
+	return ltrim(rtrim(string));
+}
+
+inline std::string& trim(const std::string& string)
+{
+	auto copy = string;
+	return ltrim(rtrim(copy));
 }
 
 std::string join(const std::vector<std::string>& elements, std::string join);

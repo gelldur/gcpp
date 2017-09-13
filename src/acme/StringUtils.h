@@ -52,6 +52,16 @@ inline bool endsWith(const std::string& value, const std::string& ending)
 
 float fuzzyCompare(const std::string& pattern, const std::string& sample);
 
+/**
+ * @param textLeft
+ * @param textRight
+ * @return number of edits we need to perform to achieve sam string eg. kitten -> sitting we need 3 changes
+ * 1. kitten → sitten (substitution of "s" for "k")
+ * 2. sitten → sittin (substitution of "i" for "e")
+ * 3. sittin → sitting (insertion of "g" at the end).
+ */
+int levenshteinDistance(const std::string& textLeft, const std::string& textRight);
+
 std::vector<std::string>& split(const std::string& string, char delim, std::vector<std::string>& elements);
 
 std::vector<std::string> split(const std::string& string, char delim);

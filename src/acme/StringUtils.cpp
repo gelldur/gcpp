@@ -5,6 +5,7 @@
 #include "StringUtils.h"
 
 #include <sstream>
+#include <numeric>
 
 namespace StringUtils
 {
@@ -49,6 +50,38 @@ float fuzzyCompare(const std::string& pattern, const std::string& sample)
 	}
 
 	return static_cast<float>(matching) / static_cast<float>(allLetters);
+}
+
+//Implementation from: https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C.2B.2B
+int levenshteinDistance(const std::string& textLeft, const std::string& textRight)
+{
+	// To change the type this function manipulates and returns, change
+	// the return type and the types of the two variables below.
+	int s1len = textLeft.size();
+	int s2len = textRight.size();
+
+	auto column_start = (decltype(s1len)) 1;
+
+	auto column = new decltype(s1len)[s1len + 1];
+	std::iota(column + column_start, column + s1len + 1, column_start);
+
+	for (auto x = column_start; x <= s2len; x++)
+	{
+		column[0] = x;
+		auto last_diagonal = x - column_start;
+		for (auto y = column_start; y <= s1len; y++)
+		{
+			auto old_diagonal = column[y];
+			auto possibilities = {
+					column[y] + 1, column[y - 1] + 1, last_diagonal + (textLeft[y - 1] == textRight[x - 1] ? 0 : 1)
+			};
+			column[y] = std::min(possibilities);
+			last_diagonal = old_diagonal;
+		}
+	}
+	auto result = column[s1len];
+	delete[] column;
+	return result;
 }
 
 std::vector<std::string>& split(const std::string& s, char delim, std::vector<std::string>& elems)

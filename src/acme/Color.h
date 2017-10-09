@@ -3,8 +3,6 @@
 //
 #pragma once
 
-#include <ui/dialog/BaseDialog.h>
-
 namespace Acme
 {
 

@@ -9,7 +9,7 @@
 #include <limits>
 #include <type_traits>
 
-namespace CrossLayout
+namespace Dexode
 {
 
 template<class T>
@@ -176,19 +176,19 @@ std::string Point<T>::toString() const
 }
 
 template<class T>
-bool operator!=(const CrossLayout::Point<T>& left, const CrossLayout::Point<T>& right)
+bool operator!=(const Point<T>& left, const Point<T>& right)
 {
 	return left.x != right.x || left.y != right.y;
 }
 
 template<class T>
-bool operator<(const CrossLayout::Point<T>& left, const CrossLayout::Point<T>& right)
+bool operator<(const Point<T>& left, const Point<T>& right)
 {
 	return left.x < right.x || (left.x == right.x && left.y < right.y);
 }
 
 template<class T>
-bool operator==(const CrossLayout::Point<T>& left, const CrossLayout::Point<T>& right)
+bool operator==(const Point<T>& left, const Point<T>& right)
 {
 	return left.x == right.x && left.y == right.y;
 }

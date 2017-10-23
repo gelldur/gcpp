@@ -33,7 +33,7 @@ inline std::string& trim(std::string& string)
 	return ltrim(rtrim(string));
 }
 
-inline std::string& trim(const std::string& string)
+inline std::string trim(const std::string& string)
 {
 	auto copy = string;
 	return ltrim(rtrim(copy));

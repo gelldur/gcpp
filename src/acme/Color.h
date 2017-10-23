@@ -59,6 +59,31 @@ inline int setAlpha(const int colorARGB, unsigned char alpha)
 	return (colorARGB & 0x00FFFFFF) | (alpha << 24);
 }
 
+/***
+ * AAAAAAAA RRRRRRRR GGGGGGGG BBBBBBBB
+ *
+ * @param alpha
+ * @param red
+ * @param green
+ * @param blue
+ * @return ARGB formated int
+ */
+
+inline int create(unsigned char alpha = 0x00
+				  , unsigned char red = 0x00
+				  , unsigned char green = 0x00
+				  , unsigned char blue = 0x00)
+{
+	int result = alpha;
+	result <<= 8;
+	result += red;
+	result <<= 8;
+	result += green;
+	result <<= 8;
+	result += blue;
+	return result;
+}
+
 }
 
 class convert

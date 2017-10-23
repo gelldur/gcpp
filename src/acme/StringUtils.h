@@ -5,6 +5,7 @@
 #pragma once
 
 #include <algorithm>
+#include <string>
 #include <functional>
 #include <cctype>
 #include <locale>
@@ -62,9 +63,27 @@ float fuzzyCompare(const std::string& pattern, const std::string& sample);
  */
 int levenshteinDistance(const std::string& textLeft, const std::string& textRight);
 
-std::vector<std::string>& split(const std::string& string, char delim, std::vector<std::string>& elements);
-
-std::vector<std::string> split(const std::string& string, char delim);
+template<typename T = std::string> // https://stackoverflow.com/a/9676623/1052261
+std::vector<T> split(const T& str, const T& delimiters)
+{
+	std::vector<T> v;
+	typename T::size_type start = 0;
+	auto pos = str.find_first_of(delimiters, start);
+	while (pos != T::npos)
+	{
+		if (pos != start)
+		{ // ignore empty tokens
+			v.emplace_back(str, start, pos - start);
+		}
+		start = pos + 1;
+		pos = str.find_first_of(delimiters, start);
+	}
+	if (start < str.length())
+	{ // ignore trailing delimiter
+		v.emplace_back(str, start, str.length() - start);
+	} // add what's left of the string
+	return v;
+}
 
 void replaceAll(std::string& inString, const std::string& fromWhat, const std::string& toWhat);
 

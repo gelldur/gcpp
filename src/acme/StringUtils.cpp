@@ -32,7 +32,7 @@ float fuzzyCompare(const std::string& pattern, const std::string& sample)
 		return 1.F;
 	}
 
-	auto sampleSplit = split(sample, ' ');
+	auto sampleSplit = split<std::string>(sample, " ");
 	int allLetters = 0;
 	int matching = 0;
 	for (const auto& element : sampleSplit)
@@ -82,24 +82,6 @@ int levenshteinDistance(const std::string& textLeft, const std::string& textRigh
 	auto result = column[s1len];
 	delete[] column;
 	return result;
-}
-
-std::vector<std::string>& split(const std::string& s, char delim, std::vector<std::string>& elems)
-{
-	std::stringstream ss(s);
-	std::string item;
-	while (getline(ss, item, delim))
-	{
-		elems.push_back(item);
-	}
-	return elems;
-}
-
-std::vector<std::string> split(const std::string& s, char delim)
-{
-	std::vector<std::string> elems;
-	split(s, delim, elems);
-	return elems;
 }
 
 void replaceAll(std::string& inString, const std::string& fromWhat, const std::string& toWhat)

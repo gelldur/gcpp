@@ -42,7 +42,12 @@ ostream& operator<<(ostream& stream, const nanoseconds& duration)
 ostream& operator<<(ostream& stream, const system_clock::time_point& time)
 {
 	auto timeInfo = std::chrono::system_clock::to_time_t(time);
-	return stream << std::ctime(&timeInfo);
+	std::string date = std::ctime(&timeInfo);
+	if (date.empty() == false)
+	{
+		date.pop_back();//Remove extra new line
+	}
+	return stream << date;
 }
 
 }

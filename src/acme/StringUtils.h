@@ -87,4 +87,6 @@ std::vector<T> split(const T& str, const T& delimiters)
 
 void replaceAll(std::string& inString, const std::string& fromWhat, const std::string& toWhat);
 
+std::string toLower(const std::string& text);
+
 }

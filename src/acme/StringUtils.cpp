@@ -98,4 +98,11 @@ void replaceAll(std::string& inString, const std::string& fromWhat, const std::s
 	}
 }
 
+std::string toLower(const std::string& text)
+{
+	auto lowerCaseString = text;
+	std::transform(lowerCaseString.begin(), lowerCaseString.end(), lowerCaseString.begin(), ::tolower);
+	return lowerCaseString;
+}
+
 }

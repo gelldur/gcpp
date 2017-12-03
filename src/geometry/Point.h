@@ -147,6 +147,12 @@ public:
 		return {x + right.x, y + right.y};
 	}
 
+	template<typename O>
+	Point<T> operator*(const O& right) const
+	{
+		return {x * right, y * right};
+	}
+
 	Point<T>& operator+=(const Point<T>& right)
 	{
 		x += right.x;
@@ -168,13 +174,21 @@ public:
 	}
 
 	template<typename O>
-	friend Point<T> operator*(const O& lhs, const Point& rhs)
+	friend typename std::enable_if<
+			!std::is_same<O, Point<T> >::value
+			&& std::is_arithmetic<O>::value
+			, Point<T>>::type
+	operator*(const O& lhs, const Point& rhs)
 	{
 		return Point<T>{lhs * rhs.x, lhs * rhs.y};
 	}
 
 	template<typename O>
-	friend Point<T> operator/(const O& lhs, const Point& rhs)
+	friend typename std::enable_if<
+			!std::is_same<O, Point<T> >::value
+			&& std::is_arithmetic<O>::value
+			, Point<T>>::type
+	operator/(const O& lhs, const Point& rhs)
 	{
 		return Point<T>{lhs / rhs.x, lhs / rhs.y};
 	}

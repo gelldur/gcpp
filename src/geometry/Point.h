@@ -146,14 +146,14 @@ public:
 		return {x + right.x, y + right.y};
 	}
 
-	Point& operator+=(const Point& right)
+	Point<T>& operator+=(const Point<T>& right)
 	{
 		x += right.x;
 		y += right.y;
 		return *this;
 	}
 
-	Point& operator/=(const float& scale)
+	Point<T>& operator/=(const float& scale)
 	{
 		x /= scale;
 		y /= scale;
@@ -164,6 +164,18 @@ public:
 	C convert() const//todo cast operator
 	{
 		return C{x, y};
+	}
+
+	template<typename O>
+	friend Point<T> operator*(const O& lhs, const Point& rhs)
+	{
+		return Point<T>{lhs * rhs.x, lhs * rhs.y};
+	}
+
+	template<typename O>
+	friend Point<T> operator/(const O& lhs, const Point& rhs)
+	{
+		return Point<T>{lhs / rhs.x, lhs / rhs.y};
 	}
 
 	std::string toString() const;

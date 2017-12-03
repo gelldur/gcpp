@@ -11,11 +11,11 @@ namespace Bezier
 {
 
 template<typename Type>
-Dexode::Point<Type> cubic(Type t
-						  , Dexode::Point<Type> A
-						  , Dexode::Point<Type> B
-						  , Dexode::Point<Type> C
-						  , Dexode::Point<Type> D)
+Dexode::Point<Type> cubic(const Type& t
+						  , const Dexode::Point<Type>& A
+						  , const Dexode::Point<Type>& B
+						  , const Dexode::Point<Type>& C
+						  , const Dexode::Point<Type>& D)
 {
 	Dexode::Point<Type> result = A * (1 - t) * (1 - t) * (1 - t);//A(1-t)^3
 	result += 3 * B * t * (1 - t) * (1 - t);// 3Bt(1-t)^2

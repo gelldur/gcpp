@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <limits>
 #include <type_traits>
+#include <ostream>
 
 namespace Dexode
 {
@@ -178,14 +179,12 @@ public:
 		return Point<T>{lhs / rhs.x, lhs / rhs.y};
 	}
 
-	std::string toString() const;
+	friend std::ostream& operator<<(std::ostream& stream, const Point<T>& point)
+	{
+		stream << "{" << point.x << ", " << point.y << "}";
+		return stream;
+	}
 };
-
-template<class T>
-std::string Point<T>::toString() const
-{
-	return std::string("{") + std::to_string(x) + "," + std::to_string(y) + "}";
-}
 
 template<class T>
 bool operator!=(const Point<T>& left, const Point<T>& right)

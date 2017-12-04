@@ -9,7 +9,7 @@
 namespace math
 {
 
-template<class T>
+template<class T = double>
 class Percent
 {
 public:

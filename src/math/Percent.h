@@ -13,70 +13,113 @@ template<class T>
 class Percent
 {
 public:
-	explicit Percent(T value, T hundredPercent)
-			: _value(std::move(value))
-			, _hundredPercent(std::move(hundredPercent))
+	//nominator and denominator
+	explicit Percent(T nominator, T denominator)
+			: _nominator(std::move(nominator))
+			, _denominator(std::move(denominator))
 	{
+		if (_denominator <= 0)
+		{
+			throw std::invalid_argument("Denominator can't be <= 0");
+		}
 	}
 
 	explicit Percent(T percentValue)
-			: _value(percentValue / 100.0)
-			, _hundredPercent(100.0)
+			: _nominator(percentValue)
+			, _denominator(100.0)
 	{
 	}
 
-	const T& getValue() const
+	T value() const
 	{
-		return _value;
+		return (_nominator / _denominator);
 	}
 
-	const T& getHundredPercent() const
+	const T& getNominator() const
 	{
-		return _hundredPercent;
+		return _nominator;
+	}
+
+	const T& getDenominator() const
+	{
+		return _denominator;
+	}
+
+	bool isZero() const
+	{
+		return _nominator == 0;
+	}
+
+	bool operator==(const Percent& rhs) const
+	{
+		if (_denominator == rhs._denominator)
+		{
+			return _nominator == rhs._nominator;
+		}
+		else if (_nominator == rhs._nominator)
+		{
+			return _denominator == rhs._denominator;
+		}
+
+		return value() == rhs.value();
+	}
+
+	bool operator!=(const Percent& rhs) const
+	{
+		return !(*this == rhs);
 	}
 
 	template<typename O>
 	typename std::enable_if<!std::is_same<O, Percent<T>>::value, O>::type
 	operator*(const O& other)
 	{
-		return other * _value;
+		return other * value();
 	}
 
 	template<typename O>
 	friend typename std::enable_if<!std::is_same<O, Percent<T>>::value, O>::type
 	operator*(const O& lhs, const Percent<T>& rhs)
 	{
-		return lhs * rhs._value;
+		return lhs * rhs.value();
 	}
 
 	template<typename O>
 	friend typename std::enable_if<!std::is_same<O, Percent<T>>::value, O>::type
 	operator-(const O& lhs, const Percent<T>& rhs)
 	{
-		return lhs - (lhs * rhs._value);
+		if (rhs.isZero())
+		{
+			return lhs;
+		}
+
+		return lhs - ((lhs * rhs._nominator) / rhs._denominator);
 	}
 
 	template<typename O>
 	friend typename std::enable_if<!std::is_same<O, Percent<T>>::value, O>::type
 	operator+(const O& lhs, const Percent<T>& rhs)
 	{
-		return lhs + (lhs * rhs._value);
+		if (rhs.isZero())
+		{
+			return lhs;
+		}
+		return lhs + ((lhs * rhs._nominator) / rhs._denominator);
 	}
 
 	Percent<T> diff() const
 	{
-		return Percent<T>{_value - _hundredPercent, _hundredPercent};
+		return Percent<T>{_nominator - _denominator, _denominator};
 	}
 
 	friend std::ostream& operator<<(std::ostream& stream, const Percent& percent)
 	{
-		stream << (percent._value / percent._hundredPercent) * 100.0 << "%";
+		stream << percent.value() * 100.0 << "%";
 		return stream;
 	}
 
 private:
-	T _value;
-	T _hundredPercent;
+	T _nominator;
+	T _denominator;
 };
 
 }

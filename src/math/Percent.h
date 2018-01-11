@@ -69,6 +69,26 @@ public:
 		return !(*this == rhs);
 	}
 
+	bool operator<(const Percent& rhs) const
+	{
+		return value() < rhs.value();
+	}
+
+	bool operator>(const Percent& rhs) const
+	{
+		return rhs < *this;
+	}
+
+	bool operator<=(const Percent& rhs) const
+	{
+		return !(rhs < *this);
+	}
+
+	bool operator>=(const Percent& rhs) const
+	{
+		return !(*this < rhs);
+	}
+
 	template<typename O>
 	typename std::enable_if<!std::is_same<O, Percent<T>>::value, O>::type
 	operator*(const O& other)

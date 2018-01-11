@@ -18,9 +18,9 @@ public:
 			: _nominator(std::move(nominator))
 			, _denominator(std::move(denominator))
 	{
-		if (_denominator <= 0)
+		if (_denominator == 0)
 		{
-			throw std::invalid_argument("Denominator can't be <= 0");
+			throw std::invalid_argument("Denominator can't be == 0");
 		}
 	}
 

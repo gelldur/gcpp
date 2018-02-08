@@ -6,6 +6,47 @@
 
 using namespace std::chrono;
 
+namespace Beautify
+{
+std::ostream& operator<<(std::ostream& stream, const Beautify::nice& time)
+{
+	auto variable = time.milis;
+	if (variable > 24h)
+	{
+		auto only = duration_cast<hours>(variable) / 24h;
+		stream << only << "d ";
+		variable -= (only * 24h);
+	}
+	if (variable > 1h)
+	{
+		auto only = duration_cast<hours>(variable);
+		stream << only << " ";
+		variable -= only;
+	}
+	if (variable > 1min)
+	{
+		auto only = duration_cast<minutes>(variable);
+		stream << only << " ";
+		variable -= only;
+	}
+	if (variable > 1s)
+	{
+		auto only = duration_cast<seconds>(variable);
+		stream << only << " ";
+		variable -= only;
+	}
+	if (variable > 1ms)
+	{
+		auto only = duration_cast<milliseconds>(variable);
+		stream << only << " ";
+		variable -= only;
+	}
+
+	return stream;
+}
+
+}
+
 namespace std
 {
 

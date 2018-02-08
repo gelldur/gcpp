@@ -6,6 +6,21 @@
 #include <chrono>
 #include <ostream>
 
+namespace Beautify
+{
+struct nice
+{
+	std::chrono::milliseconds milis;
+
+	nice(const std::chrono::nanoseconds& milis)
+			: milis(std::chrono::duration_cast<std::chrono::milliseconds>(milis))
+	{
+	}
+
+	friend std::ostream& operator<<(std::ostream& stream, const nice& time);
+};
+}
+
 namespace std
 {
 

@@ -29,7 +29,10 @@ public:
 
 	~CallOnEnd()
 	{
-		_onDie();
+		if (_onDie)
+		{
+			_onDie();
+		}
 	}
 
 private:

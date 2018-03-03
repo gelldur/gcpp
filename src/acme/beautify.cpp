@@ -67,7 +67,7 @@ ostream& operator<<(ostream& stream, const seconds& duration)
 
 ostream& operator<<(ostream& stream, const milliseconds& duration)
 {
-	return stream << duration.count() << "mls";
+	return stream << duration.count() << "ms";
 }
 
 ostream& operator<<(ostream& stream, const microseconds& duration)

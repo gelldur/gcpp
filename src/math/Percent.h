@@ -35,6 +35,11 @@ public:
 		return (_nominator / _denominator);
 	}
 
+	T percentValue() const
+	{
+		return value() * 100;
+	}
+
 	const T& getNominator() const
 	{
 		return _nominator;

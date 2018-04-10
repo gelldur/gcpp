@@ -17,6 +17,7 @@ public:
 	explicit Percent(T nominator, T denominator)
 			: _nominator(std::move(nominator))
 			, _denominator(std::move(denominator))
+			, _value((_nominator / _denominator))
 	{
 		if (_denominator == 0)
 		{
@@ -27,12 +28,13 @@ public:
 	explicit Percent(T percentValue)
 			: _nominator(percentValue)
 			, _denominator(100.0)
+			, _value((_nominator / _denominator))
 	{
 	}
 
-	T value() const
+	const T& value() const
 	{
-		return (_nominator / _denominator);
+		return _value;
 	}
 
 	T percentValue() const
@@ -145,6 +147,7 @@ public:
 private:
 	T _nominator;
 	T _denominator;
+	T _value;//Fast cache
 };
 
 }

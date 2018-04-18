@@ -22,4 +22,15 @@ void erase_if(ContainerT& items, const PredicateT& predicate)
 	}
 }
 
+template<typename ContainerT, typename Iterator>
+void erase_fast(ContainerT& items, const Iterator& iterator)
+{
+	if (items.empty())
+	{
+		return;
+	}
+	std::swap(items.back(), *iterator);
+	items.pop_back();
+}
+
 }

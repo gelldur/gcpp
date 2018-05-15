@@ -32,6 +32,36 @@ public:
 	{
 	}
 
+	Percent(const Percent& other)
+			: _nominator(other._nominator)
+			, _denominator(other._denominator)
+			, _value(other._value)
+	{
+	}
+
+	Percent(Percent&& other)
+			: _nominator(std::move(other._nominator))
+			, _denominator(std::move(other._denominator))
+			, _value(std::move(other._value))
+	{
+	}
+
+	Percent& operator=(const Percent& other)
+	{
+		_nominator = (other._nominator);
+		_denominator = (other._denominator);
+		_value = (other._value);
+		return *this;
+	}
+
+	Percent& operator=(Percent&& other)
+	{
+		_nominator = std::move(other._nominator);
+		_denominator = std::move(other._denominator);
+		_value = std::move(other._value);
+		return *this;
+	}
+
 	const T& value() const
 	{
 		return _value;

@@ -6,13 +6,12 @@
 //only changes I made are to make a class from this algorithm and make it work with proper distribution
 #pragma once
 
-#include <limits>
 #include <cstdint>
+#include <limits>
 
 class MersenneTwister
 {
 public:
-
 	explicit MersenneTwister();
 	explicit MersenneTwister(std::uint32_t seed);
 

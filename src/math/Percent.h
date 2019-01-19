@@ -3,48 +3,45 @@
 //
 #pragma once
 
-#include <ostream>
 #include <iomanip>
+#include <ostream>
 
 namespace math
 {
 
-template<class T = double>
+template <class T = double>
 class Percent
 {
 public:
 	//nominator and denominator
 	explicit Percent(T nominator, T denominator)
-			: _nominator(std::move(nominator))
-			, _denominator(std::move(denominator))
-			, _value((_nominator / _denominator))
+		: _nominator(std::move(nominator))
+		, _denominator(std::move(denominator))
+		, _value((_nominator / _denominator))
 	{
-		if (_denominator == 0)
+		if(_denominator == 0)
 		{
 			throw std::invalid_argument("Denominator can't be == 0");
 		}
 	}
 
 	explicit Percent(T percentValue)
-			: _nominator(percentValue)
-			, _denominator(100.0)
-			, _value((_nominator / _denominator))
-	{
-	}
+		: _nominator(percentValue)
+		, _denominator(100.0)
+		, _value((_nominator / _denominator))
+	{}
 
 	Percent(const Percent& other)
-			: _nominator(other._nominator)
-			, _denominator(other._denominator)
-			, _value(other._value)
-	{
-	}
+		: _nominator(other._nominator)
+		, _denominator(other._denominator)
+		, _value(other._value)
+	{}
 
 	Percent(Percent&& other)
-			: _nominator(std::move(other._nominator))
-			, _denominator(std::move(other._denominator))
-			, _value(std::move(other._value))
-	{
-	}
+		: _nominator(std::move(other._nominator))
+		, _denominator(std::move(other._denominator))
+		, _value(std::move(other._value))
+	{}
 
 	Percent& operator=(const Percent& other)
 	{
@@ -89,11 +86,11 @@ public:
 
 	bool operator==(const Percent& rhs) const
 	{
-		if (_denominator == rhs._denominator)
+		if(_denominator == rhs._denominator)
 		{
 			return _nominator == rhs._nominator;
 		}
-		else if (_nominator == rhs._nominator)
+		else if(_nominator == rhs._nominator)
 		{
 			return _denominator == rhs._denominator;
 		}
@@ -126,25 +123,24 @@ public:
 		return !(*this < rhs);
 	}
 
-	template<typename O>
-	typename std::enable_if<!std::is_same<O, Percent<T>>::value, O>::type
-	operator*(const O& other)
+	template <typename O>
+	typename std::enable_if<!std::is_same<O, Percent<T>>::value, O>::type operator*(const O& other)
 	{
 		return other * value();
 	}
 
-	template<typename O>
+	template <typename O>
 	friend typename std::enable_if<!std::is_same<O, Percent<T>>::value, O>::type
 	operator*(const O& lhs, const Percent<T>& rhs)
 	{
 		return lhs * rhs.value();
 	}
 
-	template<typename O>
+	template <typename O>
 	friend typename std::enable_if<!std::is_same<O, Percent<T>>::value, O>::type
 	operator-(const O& lhs, const Percent<T>& rhs)
 	{
-		if (rhs.isZero())
+		if(rhs.isZero())
 		{
 			return lhs;
 		}
@@ -152,11 +148,11 @@ public:
 		return lhs - ((lhs * rhs._nominator) / rhs._denominator);
 	}
 
-	template<typename O>
+	template <typename O>
 	friend typename std::enable_if<!std::is_same<O, Percent<T>>::value, O>::type
 	operator+(const O& lhs, const Percent<T>& rhs)
 	{
-		if (rhs.isZero())
+		if(rhs.isZero())
 		{
 			return lhs;
 		}
@@ -177,8 +173,7 @@ public:
 private:
 	T _nominator;
 	T _denominator;
-	T _value;//Fast cache
+	T _value; //Fast cache
 };
 
-}
-
+} // namespace math

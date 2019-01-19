@@ -11,31 +11,31 @@ namespace Beautify
 std::ostream& operator<<(std::ostream& stream, const Beautify::nice& time)
 {
 	auto variable = time.milis;
-	if (variable > 24h)
+	if(variable > 24h)
 	{
 		auto only = duration_cast<hours>(variable) / 24h;
 		stream << only << "d ";
 		variable -= (only * 24h);
 	}
-	if (variable > 1h)
+	if(variable > 1h)
 	{
 		auto only = duration_cast<hours>(variable);
 		stream << only << " ";
 		variable -= only;
 	}
-	if (variable > 1min)
+	if(variable > 1min)
 	{
 		auto only = duration_cast<minutes>(variable);
 		stream << only << " ";
 		variable -= only;
 	}
-	if (variable > 1s)
+	if(variable > 1s)
 	{
 		auto only = duration_cast<seconds>(variable);
 		stream << only << " ";
 		variable -= only;
 	}
-	if (variable > 1ms)
+	if(variable > 1ms)
 	{
 		auto only = duration_cast<milliseconds>(variable);
 		stream << only << " ";
@@ -45,7 +45,7 @@ std::ostream& operator<<(std::ostream& stream, const Beautify::nice& time)
 	return stream;
 }
 
-}
+} // namespace Beautify
 
 namespace std
 {
@@ -84,11 +84,11 @@ ostream& operator<<(ostream& stream, const system_clock::time_point& time)
 {
 	auto timeInfo = std::chrono::system_clock::to_time_t(time);
 	std::string date = std::ctime(&timeInfo);
-	if (date.empty() == false)
+	if(date.empty() == false)
 	{
-		date.pop_back();//Remove extra new line
+		date.pop_back(); //Remove extra new line
 	}
 	return stream << date;
 }
 
-}
+} // namespace std

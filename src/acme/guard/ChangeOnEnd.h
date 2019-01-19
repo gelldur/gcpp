@@ -17,15 +17,14 @@
  * https://stackoverflow.com/questions/2087600/is-a-c-destructor-guaranteed-not-to-be-called-until-the-end-of-the-block
  */
 
-template<class T, class V>
+template <class T, class V>
 class ChangeOnEnd
 {
 public:
 	ChangeOnEnd(T& value, V changeToValue)
-			: _value(value)
-			, _change(std::move(changeToValue))
-	{
-	}
+		: _value(value)
+		, _change(std::move(changeToValue))
+	{}
 
 	~ChangeOnEnd()
 	{
@@ -36,5 +35,3 @@ private:
 	T& _value;
 	V _change;
 };
-
-

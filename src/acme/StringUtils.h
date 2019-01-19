@@ -5,10 +5,10 @@
 #pragma once
 
 #include <algorithm>
-#include <string>
-#include <functional>
 #include <cctype>
+#include <functional>
 #include <locale>
+#include <string>
 #include <vector>
 
 namespace StringUtils
@@ -17,14 +17,17 @@ namespace StringUtils
 // trim from start
 inline std::string& ltrim(std::string& s)
 {
-	s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
+	s.erase(s.begin(),
+			std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
 	return s;
 }
 
 // trim from end
 inline std::string& rtrim(std::string& s)
 {
-	s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+	s.erase(
+		std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(),
+		s.end());
 	return s;
 }
 
@@ -44,7 +47,7 @@ std::string join(const std::vector<std::string>& elements, std::string join);
 
 inline bool endsWith(const std::string& value, const std::string& ending)
 {
-	if (ending.size() > value.size())
+	if(ending.size() > value.size())
 	{
 		return false;
 	}
@@ -63,22 +66,22 @@ float fuzzyCompare(const std::string& pattern, const std::string& sample);
  */
 int levenshteinDistance(const std::string& textLeft, const std::string& textRight);
 
-template<typename T = std::string> // https://stackoverflow.com/a/9676623/1052261
+template <typename T = std::string> // https://stackoverflow.com/a/9676623/1052261
 std::vector<T> split(const T& str, const T& delimiters)
 {
 	std::vector<T> v;
 	typename T::size_type start = 0;
 	auto pos = str.find_first_of(delimiters, start);
-	while (pos != T::npos)
+	while(pos != T::npos)
 	{
-		if (pos != start)
+		if(pos != start)
 		{ // ignore empty tokens
 			v.emplace_back(str, start, pos - start);
 		}
 		start = pos + 1;
 		pos = str.find_first_of(delimiters, start);
 	}
-	if (start < str.length())
+	if(start < str.length())
 	{ // ignore trailing delimiter
 		v.emplace_back(str, start, str.length() - start);
 	} // add what's left of the string
@@ -90,10 +93,11 @@ void replaceAll(std::string& inString, const std::string& fromWhat, const std::s
 std::string toLower(const std::string& text);
 
 ///Print binary data in hex format string
-template<class Container> std::string binaryToHex(const Container& data)
+template <class Container>
+std::string binaryToHex(const Container& data)
 {
 	constexpr char hexmap[] = {
-	    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
 	const auto size = std::distance(std::begin(data), std::end(data));
 
@@ -106,4 +110,4 @@ template<class Container> std::string binaryToHex(const Container& data)
 	return text;
 }
 
-}
+} // namespace StringUtils

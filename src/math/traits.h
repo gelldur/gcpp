@@ -8,18 +8,17 @@
 namespace math
 {
 
-template<class T, class = void>
-struct supports_arithmetic_operations : std::false_type {};
+template <class T, class = void>
+struct supports_arithmetic_operations : std::false_type
+{};
 
-template<class T>
-struct supports_arithmetic_operations
-		<T
-		 , std::void_t<decltype(std::declval<T>() + std::declval<T>())
-					   , decltype(std::declval<T>() - std::declval<T>())
-					   , decltype(std::declval<T>() * std::declval<T>())
-					   , decltype(std::declval<T>() / std::declval<T>())>>
-		: std::true_type
-{
-};
+template <class T>
+struct supports_arithmetic_operations<T,
+									  std::void_t<decltype(std::declval<T>() + std::declval<T>()),
+												  decltype(std::declval<T>() - std::declval<T>()),
+												  decltype(std::declval<T>() * std::declval<T>()),
+												  decltype(std::declval<T>() / std::declval<T>())>>
+	: std::true_type
+{};
 
-}
+} // namespace math

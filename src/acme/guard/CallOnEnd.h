@@ -23,13 +23,12 @@ class CallOnEnd
 {
 public:
 	CallOnEnd(std::function<void()> onDie)
-			: _onDie(std::move(onDie))
-	{
-	}
+		: _onDie(std::move(onDie))
+	{}
 
 	~CallOnEnd()
 	{
-		if (_onDie)
+		if(_onDie)
 		{
 			_onDie();
 		}
@@ -38,5 +37,3 @@ public:
 private:
 	std::function<void()> _onDie;
 };
-
-

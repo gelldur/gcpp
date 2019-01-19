@@ -9,12 +9,12 @@
 #include <log.h>
 
 Fail::Fail(const char* fileName, const char* functionName, int lineNumber)
-		: _lineNumber(lineNumber)
-		, _fileName(fileName)
-		, _functionName(functionName)
+	: _lineNumber(lineNumber)
+	, _fileName(fileName)
+	, _functionName(functionName)
 {
 	auto srcPosition = _fileName.rfind("/src/");
-	if (srcPosition != std::string::npos)
+	if(srcPosition != std::string::npos)
 	{
 		_fileName.erase(0, srcPosition);
 	}
@@ -25,7 +25,7 @@ void Fail::report() const
 {
 	auto message = _stream.str();
 	ELOG("Fail: %s", message.c_str());
-	if (_crush)
+	if(_crush)
 	{
 		throw std::runtime_error(message);
 	}
@@ -33,7 +33,7 @@ void Fail::report() const
 
 void Fail::If(bool valueToCheck, const Fail& fail)
 {
-	if (valueToCheck)
+	if(valueToCheck)
 	{
 		fail.report();
 	}

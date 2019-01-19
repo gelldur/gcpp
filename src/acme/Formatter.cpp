@@ -1,7 +1,7 @@
 #include "Formatter.h"
 
-#include <sstream>
 #include <chrono>
+#include <sstream>
 
 using namespace std::chrono;
 
@@ -16,7 +16,7 @@ namespace Formatter
  * @param spaceChar
  * @return
  */
-std::string formatWithThousand(int value, char spaceChar /*= ' '*/ )
+std::string formatWithThousand(int value, char spaceChar /*= ' '*/)
 {
 	return formatWithThousand(std::to_string(value), spaceChar);
 }
@@ -27,11 +27,11 @@ std::string formatWithThousand(int value, char spaceChar /*= ' '*/ )
  * @param spaceChar default space
  * @return formated string
  */
-std::string formatWithThousand(std::string value, char spaceChar/*= ' '*/ )
+std::string formatWithThousand(std::string value, char spaceChar /*= ' '*/)
 {
 	std::string spaceCharacter(1, spaceChar);
 
-	for (int i = (int) (value.size()) - 3; i > 0; i -= 3)
+	for(int i = (int)(value.size()) - 3; i > 0; i -= 3)
 	{
 		value.insert(i, spaceCharacter);
 	}
@@ -54,18 +54,26 @@ std::string formatTime(long long time)
 
 	char buffer[32];
 
-	if (hoursTime.count() > 0)
+	if(hoursTime.count() > 0)
 	{
-		sprintf(buffer, "%02d:%02d:%02d:%03d", (int) hoursTime.count(), (int) minutesTime.count(), (int) secondsTime
-				.count(), (int) myTime.count());
+		sprintf(buffer,
+				"%02d:%02d:%02d:%03d",
+				(int)hoursTime.count(),
+				(int)minutesTime.count(),
+				(int)secondsTime.count(),
+				(int)myTime.count());
 	}
-	else if (minutesTime.count() > 0)
+	else if(minutesTime.count() > 0)
 	{
-		sprintf(buffer, "%02d:%02d:%03d", (int) minutesTime.count(), (int) secondsTime.count(), (int) myTime.count());
+		sprintf(buffer,
+				"%02d:%02d:%03d",
+				(int)minutesTime.count(),
+				(int)secondsTime.count(),
+				(int)myTime.count());
 	}
 	else
 	{
-		sprintf(buffer, "%02d:%03d", (int) secondsTime.count(), (int) myTime.count());
+		sprintf(buffer, "%02d:%03d", (int)secondsTime.count(), (int)myTime.count());
 	}
 
 	return buffer;
@@ -84,27 +92,26 @@ std::string formatTimeWithoutMilliseconds(std::chrono::seconds time)
 
 	char buffer[32];
 
-	if (hoursTime.count() > 0)
+	if(hoursTime.count() > 0)
 	{
-		sprintf(buffer, "%02d:%02d:%02d", (int) hoursTime.count(), (int) minutesTime.count(), (int) secondsTime
-				.count());
+		sprintf(buffer,
+				"%02d:%02d:%02d",
+				(int)hoursTime.count(),
+				(int)minutesTime.count(),
+				(int)secondsTime.count());
 	}
-	else if (minutesTime.count() > 0)
+	else if(minutesTime.count() > 0)
 	{
-		sprintf(buffer, "%02d:%02d", (int) minutesTime.count(), (int) secondsTime.count());
+		sprintf(buffer, "%02d:%02d", (int)minutesTime.count(), (int)secondsTime.count());
 	}
 	else
 	{
-		sprintf(buffer, "00:%02d", (int) secondsTime.count());
+		sprintf(buffer, "00:%02d", (int)secondsTime.count());
 	}
 
 	return buffer;
 }
 
-}
+} // namespace Formatter
 
 } /* namespace Utils */
-
-
-
-

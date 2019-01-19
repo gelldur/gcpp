@@ -19,7 +19,7 @@ namespace Poco::Net
 class HTTPRequest;
 class HTTPResponse;
 class HTTPSClientSession;
-}
+} // namespace Poco::Net
 
 class PocoRequest
 {

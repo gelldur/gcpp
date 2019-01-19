@@ -3,14 +3,15 @@
 //
 #pragma once
 
-#include <vector>
 #include <algorithm>
 #include <ostream>
+#include <vector>
 
-template<typename ValueAgregate>
+template <typename ValueAgregate>
 class Sack
 {
 	using container = std::vector<ValueAgregate>;
+
 public:
 	using const_iterator = typename container::const_iterator;
 	using iterator = typename container::iterator;
@@ -19,24 +20,20 @@ public:
 	Sack() = default;
 
 	Sack(const Sack& other)
-			: _data{other._data}
-	{
-	}
+		: _data{other._data}
+	{}
 
 	Sack(Sack&& other) noexcept
-			: _data{std::move(other._data)}
-	{
-	}
+		: _data{std::move(other._data)}
+	{}
 
 	Sack(std::initializer_list<ValueAgregate> initList)
-			: _data{std::move(initList)}
-	{
-	}
+		: _data{std::move(initList)}
+	{}
 
 	Sack(container initList)
-			: _data{std::move(initList)}
-	{
-	}
+		: _data{std::move(initList)}
+	{}
 
 	Sack& operator=(const Sack& other)
 	{
@@ -54,7 +51,7 @@ public:
 	void add(const ValueAgregate& value)
 	{
 		auto found = find(value.getType());
-		if (found == end())
+		if(found == end())
 		{
 			_data.push_back(value);
 		}
@@ -67,7 +64,7 @@ public:
 	void add(ValueAgregate&& value)
 	{
 		auto found = find(value.getType());
-		if (found == end())
+		if(found == end())
 		{
 			_data.push_back(std::move(value));
 		}
@@ -80,7 +77,7 @@ public:
 	void set(const ValueAgregate& value)
 	{
 		auto found = find(value.getType());
-		if (found == end())
+		if(found == end())
 		{
 			_data.push_back(value);
 		}
@@ -93,7 +90,7 @@ public:
 	void set(ValueAgregate&& value)
 	{
 		auto found = find(value.getType());
-		if (found == end())
+		if(found == end())
 		{
 			_data.push_back(std::move(value));
 		}
@@ -106,7 +103,7 @@ public:
 	ValueAgregate get(Type type) const
 	{
 		auto found = find(type);
-		if (found == end())
+		if(found == end())
 		{
 			return ValueAgregate{type};
 		}
@@ -125,7 +122,7 @@ public:
 
 	Sack& operator+=(const Sack& other)
 	{
-		for (const auto& element : other)
+		for(const auto& element : other)
 		{
 			add(element);
 		}
@@ -134,7 +131,7 @@ public:
 
 	Sack& operator-=(const Sack& other)
 	{
-		for (const auto& element : other)
+		for(const auto& element : other)
 		{
 			add(-element);
 		}
@@ -155,8 +152,8 @@ public:
 
 	Sack operator-(const Sack& other) const
 	{
-		Sack sack = *this;//cpy
-		for (const auto& element : other)
+		Sack sack = *this; //cpy
+		for(const auto& element : other)
 		{
 			sack.add(-element);
 		}
@@ -180,29 +177,24 @@ public:
 
 	iterator find(const Type& searchType)
 	{
-		return std::find_if(_data.begin(), _data.end()
-							, [searchType](const ValueAgregate& value)
-				{
-					return value.getType() == searchType;
-				});
+		return std::find_if(_data.begin(), _data.end(), [searchType](const ValueAgregate& value) {
+			return value.getType() == searchType;
+		});
 	}
 
 	const_iterator find(const Type& searchType) const
 	{
-		return std::find_if(_data.cbegin(), _data.cend()
-							, [searchType](const ValueAgregate& value)
-				{
-					return value.getType() == searchType;
-				});
+		return std::find_if(_data.cbegin(), _data.cend(), [searchType](const ValueAgregate& value) {
+			return value.getType() == searchType;
+		});
 	}
 
-	template<class Predicate>
+	template <class Predicate>
 	Sack& erase_if(Predicate&& predicate)
 	{
-		auto removeFrom = std::remove_if(_data.begin()
-										 , _data.end()
-										 , predicate);//TODO std::forward ?
-		if (removeFrom != _data.end())
+		auto removeFrom =
+			std::remove_if(_data.begin(), _data.end(), predicate); //TODO std::forward ?
+		if(removeFrom != _data.end())
 		{
 			_data.erase(removeFrom, _data.end());
 		}
@@ -213,12 +205,11 @@ public:
 	{
 		stream << "Sack{ ";
 		auto copy = sack._data;
-		std::sort(copy.begin(), copy.end(), [](const ValueAgregate& left
-											   , const ValueAgregate& right)
-		{
-			return left.getType() < right.getType();
-		});
-		for (const auto& element : copy)
+		std::sort(
+			copy.begin(), copy.end(), [](const ValueAgregate& left, const ValueAgregate& right) {
+				return left.getType() < right.getType();
+			});
+		for(const auto& element : copy)
 		{
 			stream << element << ", ";
 		}
@@ -229,5 +220,3 @@ public:
 private:
 	std::vector<ValueAgregate> _data;
 };
-
-

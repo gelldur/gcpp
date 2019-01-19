@@ -3,9 +3,9 @@
 //
 
 #include <gtest/gtest.h>
+#include <log.h>
 #include <map/generator/MersenneTwister.h>
 #include <random>
-#include <log.h>
 
 TEST(MersenneTwisterTest, simpleGeneratorTest)
 {

@@ -30,7 +30,7 @@ void MersenneTwister::initialize(std::uint32_t seed)
 		i += 2;
 		*(j + 2) = _b;
 		j += 2;
-	} while (j < _x + 0x26C);
+	} while(j < _x + 0x26C);
 }
 
 std::uint32_t MersenneTwister::twist()
@@ -44,7 +44,7 @@ std::uint32_t MersenneTwister::twist()
 	{
 		i = (top - 396) % 624;
 		_c = (*j ^ ((*j ^ (_x[i])) & 0x7FFFFFFF)) >> 1;
-		if ((*j ^ (*j ^ _x[i])) & 1)
+		if((*j ^ (*j ^ _x[i])) & 1)
 		{
 			_c ^= 0x9908B0DFu;
 		}
@@ -53,7 +53,7 @@ std::uint32_t MersenneTwister::twist()
 		*j = out;
 		++j;
 		--l;
-	} while (l);
+	} while(l);
 	_index = 0;
 	return out;
 }
@@ -61,7 +61,7 @@ std::uint32_t MersenneTwister::twist()
 std::uint32_t MersenneTwister::extract()
 {
 	unsigned i = _index;
-	if (_index >= 624)
+	if(_index >= 624)
 	{
 		twist();
 		i = _index;
@@ -69,6 +69,6 @@ std::uint32_t MersenneTwister::extract()
 	std::uint32_t e = _x[i];
 	std::uint32_t _v = _x[i] >> 11;
 	_index = i + 1;
-	std::uint32_t def = (((_v ^ e) & 0xFF3A58AD) << 7) ^_v ^e;
+	std::uint32_t def = (((_v ^ e) & 0xFF3A58AD) << 7) ^ _v ^ e;
 	return ((def & 0xFFFFDF8C) << 15) ^ def ^ ((((def & 0xFFFFDF8C) << 15) ^ def) >> 18);
 }

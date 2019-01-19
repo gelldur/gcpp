@@ -12,7 +12,7 @@ public:
 	static void If(bool valueToCheck, const Fail& fail);
 	Fail(const char* fileName, const char* functionName, int lineNumber);
 
-	template<class T>
+	template <class T>
 	Fail& add(const T& message)
 	{
 		_stream << message;
@@ -35,5 +35,3 @@ private:
 	std::string _functionName;
 	std::stringstream _stream;
 };
-
-

@@ -5,8 +5,8 @@
 
 #include <iostream>
 
-#include <data/Sack.h>
 #include <data/Currency.h>
+#include <data/Sack.h>
 
 TEST_CASE("Should copy assign without anny issues", "[Sack]")
 {

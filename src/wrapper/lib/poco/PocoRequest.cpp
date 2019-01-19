@@ -12,13 +12,15 @@ PocoRequest::PocoRequest(std::string_view uri)
 	const Poco::URI pocoUri(uri.data());
 	if(pocoUri.getScheme() != "https")
 	{
-		throw std::invalid_argument{std::string{"Please pass https scheme not:"} + pocoUri.getScheme()};
+		throw std::invalid_argument{std::string{"Please pass https scheme not:"} +
+									pocoUri.getScheme()};
 	}
 
-	_session = std::make_unique<Poco::Net::HTTPSClientSession>(pocoUri.getHost(), pocoUri.getPort());
+	_session =
+		std::make_unique<Poco::Net::HTTPSClientSession>(pocoUri.getHost(), pocoUri.getPort());
 
 	_request = std::make_unique<Poco::Net::HTTPRequest>(
-	    Poco::Net::HTTPRequest::HTTP_GET, uri.data(), Poco::Net::HTTPRequest::HTTP_1_1);
+		Poco::Net::HTTPRequest::HTTP_GET, uri.data(), Poco::Net::HTTPRequest::HTTP_1_1);
 }
 
 PocoRequest::~PocoRequest() {}

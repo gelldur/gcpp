@@ -69,10 +69,10 @@ inline int setAlpha(const int colorARGB, unsigned char alpha)
  * @return ARGB formated int
  */
 
-inline int create(unsigned char alpha = 0x00
-				  , unsigned char red = 0x00
-				  , unsigned char green = 0x00
-				  , unsigned char blue = 0x00)
+inline int create(unsigned char alpha = 0x00,
+				  unsigned char red = 0x00,
+				  unsigned char green = 0x00,
+				  unsigned char blue = 0x00)
 {
 	int result = alpha;
 	result <<= 8;
@@ -84,23 +84,23 @@ inline int create(unsigned char alpha = 0x00
 	return result;
 }
 
-}
+} // namespace ARGB
 
 class convert
 {
 public:
 	convert(const int color)
-			: _color(color)
-	{
-	}
+		: _color(color)
+	{}
 
-	template<typename T>
+	template <typename T>
 	operator T() const
 	{
 		return T{_color};
 	}
 
-	convert& opacity(const float value, int (* setAlphaFunction)(const int, unsigned char) = &ARGB::setAlpha)
+	convert& opacity(const float value,
+					 int (*setAlphaFunction)(const int, unsigned char) = &ARGB::setAlpha)
 	{
 		_color = setAlphaFunction(_color, static_cast<unsigned char>(255 * value));
 		return *this;
@@ -110,5 +110,5 @@ private:
 	int _color;
 };
 
-}
-}
+} // namespace Color
+} // namespace Acme

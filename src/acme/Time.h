@@ -20,8 +20,6 @@ std::chrono::seconds getUnixTimeStamp();
 
 std::chrono::milliseconds getUnixTimeStampInMilliseconds();
 
-}
+} // namespace Time
 
-}
-
-
+} // namespace Acme

@@ -4,8 +4,8 @@
 
 #include "StringUtils.h"
 
-#include <sstream>
 #include <numeric>
+#include <sstream>
 
 namespace StringUtils
 {
@@ -13,9 +13,9 @@ namespace StringUtils
 std::string join(const std::vector<std::string>& elements, std::string join)
 {
 	std::string joined;
-	for (const auto& element : elements)
+	for(const auto& element : elements)
 	{
-		if (joined.empty() == false)
+		if(joined.empty() == false)
 		{
 			joined += join;
 		}
@@ -27,7 +27,7 @@ std::string join(const std::vector<std::string>& elements, std::string join)
 
 float fuzzyCompare(const std::string& pattern, const std::string& sample)
 {
-	if (pattern == sample)
+	if(pattern == sample)
 	{
 		return 1.F;
 	}
@@ -35,16 +35,16 @@ float fuzzyCompare(const std::string& pattern, const std::string& sample)
 	auto sampleSplit = split<std::string>(sample, " ");
 	int allLetters = 0;
 	int matching = 0;
-	for (const auto& element : sampleSplit)
+	for(const auto& element : sampleSplit)
 	{
 		allLetters += element.length();
-		if (pattern.find(element) != std::string::npos)
+		if(pattern.find(element) != std::string::npos)
 		{
 			matching += element.length();
 		}
 	}
 
-	if (allLetters == 0)
+	if(allLetters == 0)
 	{
 		return 0.F;
 	}
@@ -60,21 +60,21 @@ int levenshteinDistance(const std::string& textLeft, const std::string& textRigh
 	int s1len = textLeft.size();
 	int s2len = textRight.size();
 
-	auto column_start = (decltype(s1len)) 1;
+	auto column_start = (decltype(s1len))1;
 
 	auto column = new decltype(s1len)[s1len + 1];
 	std::iota(column + column_start, column + s1len + 1, column_start);
 
-	for (auto x = column_start; x <= s2len; x++)
+	for(auto x = column_start; x <= s2len; x++)
 	{
 		column[0] = x;
 		auto last_diagonal = x - column_start;
-		for (auto y = column_start; y <= s1len; y++)
+		for(auto y = column_start; y <= s1len; y++)
 		{
 			auto old_diagonal = column[y];
-			auto possibilities = {
-					column[y] + 1, column[y - 1] + 1, last_diagonal + (textLeft[y - 1] == textRight[x - 1] ? 0 : 1)
-			};
+			auto possibilities = {column[y] + 1,
+								  column[y - 1] + 1,
+								  last_diagonal + (textLeft[y - 1] == textRight[x - 1] ? 0 : 1)};
 			column[y] = std::min(possibilities);
 			last_diagonal = old_diagonal;
 		}
@@ -86,12 +86,12 @@ int levenshteinDistance(const std::string& textLeft, const std::string& textRigh
 
 void replaceAll(std::string& inString, const std::string& fromWhat, const std::string& toWhat)
 {
-	if (fromWhat.empty())
+	if(fromWhat.empty())
 	{
 		return;
 	}
 	size_t position = 0;
-	while ((position = inString.find(fromWhat, position)) != std::string::npos)
+	while((position = inString.find(fromWhat, position)) != std::string::npos)
 	{
 		inString.replace(position, fromWhat.length(), toWhat);
 		position += toWhat.length();
@@ -101,8 +101,9 @@ void replaceAll(std::string& inString, const std::string& fromWhat, const std::s
 std::string toLower(const std::string& text)
 {
 	auto lowerCaseString = text;
-	std::transform(lowerCaseString.begin(), lowerCaseString.end(), lowerCaseString.begin(), ::tolower);
+	std::transform(
+		lowerCaseString.begin(), lowerCaseString.end(), lowerCaseString.begin(), ::tolower);
 	return lowerCaseString;
 }
 
-}
+} // namespace StringUtils

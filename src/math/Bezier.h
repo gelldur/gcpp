@@ -22,23 +22,21 @@ namespace Bezier
  * @param D last point (P3)
  * @return B(t) result
  */
-template<typename Type>
-Dexode::Point<Type> cubic(const Type& t
-						  , const Dexode::Point<Type>& A
-						  , const Dexode::Point<Type>& B
-						  , const Dexode::Point<Type>& C
-						  , const Dexode::Point<Type>& D)
+template <typename Type>
+Dexode::Point<Type> cubic(const Type& t,
+						  const Dexode::Point<Type>& A,
+						  const Dexode::Point<Type>& B,
+						  const Dexode::Point<Type>& C,
+						  const Dexode::Point<Type>& D)
 {
 	assert(t <= 1 && t >= 0);
 
-	Dexode::Point<Type> result = A * (1 - t) * (1 - t) * (1 - t);//A(1-t)^3
-	result += 3 * B * t * (1 - t) * (1 - t);// 3Bt(1-t)^2
-	result += 3 * C * t * t * (1 - t);// 3Ct^2(1-t)
-	result += D * t * t * t;// Dt^3
+	Dexode::Point<Type> result = A * (1 - t) * (1 - t) * (1 - t); //A(1-t)^3
+	result += 3 * B * t * (1 - t) * (1 - t); // 3Bt(1-t)^2
+	result += 3 * C * t * t * (1 - t); // 3Ct^2(1-t)
+	result += D * t * t * t; // Dt^3
 	return result;
 }
 
-}
-}
-
-
+} // namespace Bezier
+} // namespace math

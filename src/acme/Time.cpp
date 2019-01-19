@@ -22,6 +22,6 @@ std::chrono::milliseconds getUnixTimeStampInMilliseconds()
 	return std::chrono::duration_cast<std::chrono::milliseconds>(duration);
 }
 
-}
+} // namespace Time
 
-}
+} // namespace Acme

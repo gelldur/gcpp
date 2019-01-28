@@ -18,6 +18,8 @@
  * https://stackoverflow.com/questions/2087600/is-a-c-destructor-guaranteed-not-to-be-called-until-the-end-of-the-block
  */
 
+#include <utility>
+
 template<class T, class V>
 class ChangeOnEnd
 {

@@ -47,5 +47,14 @@ std::string SecretCin::readPassword()
 
 	SetStdinEcho(true);
 
+	// From ASCII
+	// end of text	ctrl-C	3	03	ETX
+	// end of xmit	ctrl-D	4	04	EOT
+	if(password.empty() == false && (password.back() == 0x03 || password.back() == 0x04))
+	{
+		// Password should be treated as empty, when user cancel input
+		// This seems isn't executed when using std::cin :)
+		return "";
+	}
 	return password;
 }

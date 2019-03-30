@@ -254,6 +254,13 @@ constexpr auto operator==(const ConstexprString<N>& lhs, const Right& rhs) ->
 	return compareCharacters<N, 0>(lhs, rhs);
 }
 
+template <std::size_t N, typename Right>
+constexpr auto operator!=(const ConstexprString<N>& lhs, const Right& rhs) ->
+	typename std::enable_if<N == length_of<Right>::value, bool>::type
+{
+	return !(lhs == rhs);
+}
+
 template <typename Left, std::size_t N>
 constexpr auto operator==(const Left& lhs, const ConstexprString<N>& rhs) ->
 	typename std::enable_if<length_of<Left>::value == N, bool>::type
@@ -261,11 +268,25 @@ constexpr auto operator==(const Left& lhs, const ConstexprString<N>& rhs) ->
 	return compareCharacters<N, 0>(lhs, rhs);
 }
 
+template <typename Left, std::size_t N>
+constexpr auto operator!=(const Left& lhs, const ConstexprString<N>& rhs) ->
+	typename std::enable_if<length_of<Left>::value == N, bool>::type
+{
+	return !(lhs == rhs);
+}
+
 template <std::size_t X, std::size_t Y>
 constexpr auto operator==(const ConstexprString<X>& lhs, const ConstexprString<Y>& rhs) ->
 	typename std::enable_if<X == Y, bool>::type
 {
 	return compareCharacters<X, 0>(lhs, rhs);
+}
+
+template <std::size_t X, std::size_t Y>
+constexpr auto operator!=(const ConstexprString<X>& lhs, const ConstexprString<Y>& rhs) ->
+	typename std::enable_if<X == Y, bool>::type
+{
+	return !(lhs == rhs);
 }
 
 // Different length strings can never be equal
@@ -277,6 +298,14 @@ constexpr bool operator==(const ConstexprString<N>& lhs, const Right& rhs)
 	return false;
 }
 
+template <std::size_t N,
+		  typename Right,
+		  typename std::enable_if<N != length_of<Right>::value, bool>::type = 0>
+constexpr bool operator!=(const ConstexprString<N>& lhs, const Right& rhs)
+{
+	return !(lhs == rhs);
+}
+
 // Different length strings can never be equal
 template <typename Left,
 		  std::size_t N,
@@ -286,11 +315,25 @@ constexpr bool operator==(const Left& lhs, const ConstexprString<N>& rhs)
 	return false;
 }
 
+template <typename Left,
+		  std::size_t N,
+		  typename std::enable_if<length_of<Left>::value != N, bool>::type = 0>
+constexpr bool operator!=(const Left& lhs, const ConstexprString<N>& rhs)
+{
+	return !(lhs == rhs);
+}
+
 // Different length strings can never be equal
 template <std::size_t X, std::size_t Y, typename std::enable_if<X != Y, bool>::type = 0>
 constexpr bool operator==(const ConstexprString<X>& lhs, const ConstexprString<Y>& rhs)
 {
 	return false;
+}
+
+template <std::size_t X, std::size_t Y, typename std::enable_if<X != Y, bool>::type = 0>
+constexpr bool operator!=(const ConstexprString<X>& lhs, const ConstexprString<Y>& rhs)
+{
+	return !(lhs == rhs);
 }
 
 template <std::size_t N, std::size_t... Indexes>

@@ -1,6 +1,5 @@
-//
-// Created by gelldur on 30.03.19.
-//
+// SPDX-License-Identifier: MIT
+// Copyright © 2019 Dawid Drozd aka Gelldur
 #pragma once
 
 #include "string/ConstexprString.hpp"

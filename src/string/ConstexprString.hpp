@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+// Copyright © 2014, 2017 David Sanders
+// Copyright © 2019 Dawid Drozd aka Gelldur
 #pragma once
 
 #include <cstddef>

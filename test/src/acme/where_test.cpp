@@ -26,7 +26,29 @@ void exampleUseCaseWhere(int argument)
 
 } // namespace
 
-TEST_CASE("Where", "Simple test")
+TEST_CASE("Where usage example", "[where][constexpr_string]")
 {
 	exampleUseCaseWhere(10);
+}
+
+TEST_CASE("Should work at compile time", "[constexpr_string]")
+{
+	constexpr auto foo = string::make("foo");
+	constexpr auto bar = string::make("bar");
+
+	constexpr auto foobar = foo + bar;
+
+	static_assert(foobar == "foobar");
+	static_assert("foobar" == foobar);
+
+	static_assert((foo + "bar") == "foobar");
+	static_assert("foobar" == ("foo" + bar));
+
+	static_assert((foo + bar)[3] == 'b');
+	static_assert((foo + bar).length() == 6);
+	REQUIRE(foo == "foo");
+	REQUIRE(bar == "bar");
+	REQUIRE(foobar != "bar");
+	REQUIRE(foobar != "foo");
+	REQUIRE(foobar == "foobar");
 }

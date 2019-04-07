@@ -103,12 +103,13 @@ public:
 	{}
 
 	template <std::size_t X, std::size_t... Indexes>
-	constexpr ConstexprString(const ConstexprString<X>& rhs, std::index_sequence<Indexes...> dummy)
+	constexpr ConstexprString(const ConstexprString<X>& rhs,
+							  std::index_sequence<Indexes...> /*dummy*/)
 		: _value{rhs[Indexes]..., '\0'}
 	{}
 
 	template <std::size_t... Indexes>
-	constexpr ConstexprString(const char (&value)[N + 1], std::index_sequence<Indexes...> dummy)
+	constexpr ConstexprString(const char (&value)[N + 1], std::index_sequence<Indexes...> /*dummy*/)
 		: ConstexprString(value[Indexes]...)
 	{}
 
@@ -132,15 +133,15 @@ public:
 		return N;
 	}
 
+	std::string toString() const
+	{
+		return std::string(_value);
+	}
+
 	friend std::ostream& operator<<(std::ostream& os, const ConstexprString& constant)
 	{
 		os << constant._value;
 		return os;
-	}
-
-	std::string toString() const
-	{
-		return std::string(_value);
 	}
 
 protected:
@@ -207,8 +208,8 @@ template <typename Left, typename Right, std::size_t... IndexesLeft, std::size_t
 constexpr ConstexprString<sizeof...(IndexesLeft) + sizeof...(IndexesRight)>
 ConcatStrings(const Left& lhs,
 			  const Right& rhs,
-			  std::index_sequence<IndexesLeft...> dummy1,
-			  std::index_sequence<IndexesRight...> dummy2)
+			  std::index_sequence<IndexesLeft...> /*dummy1*/,
+			  std::index_sequence<IndexesRight...> /*dummy2*/)
 {
 	return ConstexprString<sizeof...(IndexesLeft) + sizeof...(IndexesRight)>(lhs[IndexesLeft]...,
 																			 rhs[IndexesRight]...);
@@ -340,7 +341,13 @@ constexpr bool operator!=(const ConstexprString<X>& lhs, const ConstexprString<Y
 }
 
 template <std::size_t N, std::size_t... Indexes>
-constexpr auto make(const char (&value)[N], std::index_sequence<Indexes...> dummy)
+constexpr auto make(const char (&value)[N], std::index_sequence<Indexes...> /*dummy*/)
+{
+	return ConstexprString<N - 1>(value[Indexes]...);
+}
+
+template <std::size_t N, std::size_t... Indexes>
+constexpr auto make(const char* value, std::index_sequence<Indexes...> /*dummy*/)
 {
 	return ConstexprString<N - 1>(value[Indexes]...);
 }
@@ -351,6 +358,21 @@ template <std::size_t N>
 constexpr auto make(const char (&value)[N])
 {
 	return make(value, typename std::make_index_sequence<N - 1>{});
+}
+
+template <std::size_t N>
+constexpr auto make(const char* value)
+{
+	return make<N>(value, typename std::make_index_sequence<N - 1>{});
+}
+
+template <const std::size_t position, std::size_t N>
+constexpr auto subString(ConstexprString<N> text)
+{
+	static_assert(position < text.length(), "Out of range");
+	constexpr auto newSize = text.length() - position;
+
+	return make<newSize>(text.get() + position);
 }
 
 } // namespace string

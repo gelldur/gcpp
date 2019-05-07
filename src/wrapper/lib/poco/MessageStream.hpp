@@ -21,7 +21,7 @@ public:
 				  const char* file,
 				  int line);
 
-	virtual ~MessageStream() override;
+	~MessageStream() override;
 
 	/**
 	 * Sends message to logger. It is done automatically when dtor is called.

@@ -4,45 +4,61 @@
 #include "beautify.h"
 //////////////////////////////////
 
+#include <iomanip>
+
 using namespace std::chrono;
 
 namespace Beautify
 {
-std::ostream& operator<<(std::ostream& stream, const Beautify::nice& time)
+std::ostream& operator<<(std::ostream& out, const Beautify::nice& time)
 {
-	auto variable = time.milis;
-	if(variable > 24h)
+	std::stringstream stream;
+	auto variable = time.data;
+	if(time.show_days && variable > 24h)
 	{
 		auto only = duration_cast<hours>(variable) / 24h;
-		stream << only << "d ";
+		stream << std::setw(3) << only << "d ";
 		variable -= (only * 24h);
 	}
-	if(variable > 1h)
+	if(time.show_h && variable > 1h)
 	{
 		auto only = duration_cast<hours>(variable);
-		stream << only << " ";
+		stream << " " << std::setw(3) << only;
 		variable -= only;
 	}
-	if(variable > 1min)
+	if(time.show_min && variable > 1min)
 	{
 		auto only = duration_cast<minutes>(variable);
-		stream << only << " ";
+		stream << " " << std::setw(3) << only;
 		variable -= only;
 	}
-	if(variable > 1s)
+	if(time.show_s && variable > 1s)
 	{
 		auto only = duration_cast<seconds>(variable);
-		stream << only << " ";
+		stream << " " << std::setw(3) << only;
 		variable -= only;
 	}
-	if(variable > 1ms)
+	if(time.show_ms && variable > 1ms)
 	{
 		auto only = duration_cast<milliseconds>(variable);
-		stream << only << " ";
+		stream << " " << std::setw(3) << only;
+		variable -= only;
+	}
+	if(time.show_us && variable > 1us)
+	{
+		auto only = duration_cast<microseconds>(variable);
+		stream << " " << std::setw(3) << only;
+		variable -= only;
+	}
+	if(time.show_ns && variable > 1ns)
+	{
+		auto only = duration_cast<nanoseconds>(variable);
+		stream << " " << std::setw(3) << only;
 		variable -= only;
 	}
 
-	return stream;
+	out << stream.str();
+	return out;
 }
 
 } // namespace Beautify

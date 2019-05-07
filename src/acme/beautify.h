@@ -10,10 +10,57 @@ namespace Beautify
 {
 struct nice
 {
-	std::chrono::milliseconds milis;
+	std::chrono::nanoseconds data;
+	bool show_ns : 1;
+	bool show_us : 1;
+	bool show_ms : 1;
+	bool show_s : 1;
+	bool show_min : 1;
+	bool show_h : 1;
+	bool show_days : 1;
 
-	nice(const std::chrono::nanoseconds& milis)
-		: milis(std::chrono::duration_cast<std::chrono::milliseconds>(milis))
+	explicit nice(const std::chrono::nanoseconds& nanos)
+		: data(nanos)
+		, show_ns{true}
+		, show_us{true}
+		, show_ms{true}
+		, show_s{true}
+		, show_min{true}
+		, show_h{true}
+		, show_days{true}
+	{}
+
+	explicit nice(const std::chrono::microseconds& nanos)
+		: data(nanos)
+		, show_ns{false}
+		, show_us{true}
+		, show_ms{true}
+		, show_s{true}
+		, show_min{true}
+		, show_h{true}
+		, show_days{true}
+	{}
+
+	explicit nice(const std::chrono::milliseconds& nanos)
+		: data(nanos)
+		, show_ns{false}
+		, show_us{false}
+		, show_ms{true}
+		, show_s{true}
+		, show_min{true}
+		, show_h{true}
+		, show_days{true}
+	{}
+
+	explicit nice(const std::chrono::seconds& nanos)
+		: data(nanos)
+		, show_ns{false}
+		, show_us{false}
+		, show_ms{false}
+		, show_s{true}
+		, show_min{true}
+		, show_h{true}
+		, show_days{true}
 	{}
 
 	friend std::ostream& operator<<(std::ostream& stream, const nice& time);

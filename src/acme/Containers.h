@@ -43,4 +43,12 @@ void erase_fast(ContainerT& items, const Iterator& iterator)
 	items.pop_back();
 }
 
+template <typename InputIterator, typename ValueType>
+InputIterator closest(InputIterator first, InputIterator last, ValueType value)
+{
+	return std::min_element(first, last, [&](ValueType x, ValueType y) {
+		return std::abs(x - value) < std::abs(y - value);
+	});
+}
+
 } // namespace Acme

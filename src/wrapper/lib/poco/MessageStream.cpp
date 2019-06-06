@@ -10,14 +10,16 @@ namespace Poco
 MessageStream::MessageStream(std::string logger)
 
 	: _loggerName(std::move(logger))
-{}
+{
+	source(_loggerName);
+}
 
 MessageStream::MessageStream(std::string logger,
 							 const std::string& source,
 							 Poco::Message::Priority prio,
 							 const char* file,
 							 int line)
-	: _message{source, "", prio, file, line}
+	: _message{source.empty() ? logger : source, "", prio, file, line}
 	, _loggerName(std::move(logger))
 {}
 
@@ -65,7 +67,13 @@ void MessageStream::send()
 {
 	if(rdbuf()->in_avail() > 0) // check is it empty
 	{
-		_message.setText(str());
+		auto text = str();
+		if(text.back() == '\n')
+		{
+			text.back() = '\0';
+		}
+
+		_message.setText(std::move(text));
 		Poco::Logger::get(_loggerName).log(_message);
 		str(""); //clear
 	}

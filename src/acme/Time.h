@@ -8,20 +8,18 @@
 namespace Acme
 {
 
-namespace Time
-{
+    namespace Time
+    {
 
-/**
- * @brief Return the current time in UNIX.
- * Unix time stamp is in UTC -> https://en.wikipedia.org/wiki/Coordinated_Universal_Time
- * @return unix time stamp in seconds
- */
-std::chrono::seconds getUnixTimeStamp();
+        /**
+         * @brief Return the current time in UNIX.
+         * Unix time stamp is in UTC -> https://en.wikipedia.org/wiki/Coordinated_Universal_Time
+         * @return unix time stamp in seconds
+         */
+        std::chrono::seconds getUnixTimeStamp();
 
-std::chrono::milliseconds getUnixTimeStampInMilliseconds();
+        std::chrono::milliseconds getUnixTimeStampInMilliseconds();
 
-}
+    } // namespace Time
 
-}
-
-
+} // namespace Acme

@@ -10,6 +10,9 @@
  * Also checkout std::lock_guard
  * http://en.cppreference.com/w/cpp/thread/lock_guard
  *
+ * Read about scope guard idiom
+ * https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Scope_Guard
+ *
  * C++ standard
  *
  * * 3.7.2/3
@@ -22,7 +25,7 @@
 class CallOnEnd
 {
 public:
-	CallOnEnd(std::function<void()> onDie)
+	explicit CallOnEnd(std::function<void()> onDie) noexcept
 		: _onDie(std::move(onDie))
 	{}
 

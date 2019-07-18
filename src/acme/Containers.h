@@ -53,4 +53,11 @@ InputIterator closest(InputIterator first, InputIterator last, ValueType value)
 	});
 }
 
+template <typename T>
+T& append(T& destination, const T& elements)
+{
+	destination.insert(std::end(destination), std::begin(elements), std::end(elements));
+	return destination;
+}
+
 } // namespace Acme

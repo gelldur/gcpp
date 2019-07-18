@@ -43,6 +43,13 @@ public:
 		, _value(std::move(other._value))
 	{}
 
+	template <typename E>
+	Percent(const Percent<E>& other)
+		: _nominator(other.getNominator())
+		, _denominator(other.getDenominator())
+		, _value((_nominator / _denominator))
+	{}
+
 	Percent& operator=(const Percent& other)
 	{
 		_nominator = (other._nominator);

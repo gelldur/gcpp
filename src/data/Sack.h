@@ -190,7 +190,7 @@ public:
 	}
 
 	template <class Predicate>
-	Sack& erase_if(Predicate&& predicate)
+	void erase_if(Predicate&& predicate)
 	{
 		auto removeFrom =
 			std::remove_if(_data.begin(), _data.end(), predicate); //TODO std::forward ?
@@ -198,7 +198,6 @@ public:
 		{
 			_data.erase(removeFrom, _data.end());
 		}
-		return *this;
 	}
 
 	friend std::ostream& operator<<(std::ostream& stream, const Sack& sack)

@@ -35,14 +35,15 @@ void remove_if(ContainerT& items, const PredicateT& predicate) //TODO
 }
 
 template <typename ContainerT, typename Iterator>
-void erase_fast(ContainerT& items, const Iterator& iterator)
+bool erase_fast(ContainerT& items, const Iterator& iterator)
 {
-	if(items.empty())
+	if(items.empty() || iterator == std::end(items))
 	{
-		return;
+		return false;
 	}
 	std::swap(items.back(), *iterator);
 	items.pop_back();
+	return true;
 }
 
 template <typename InputIterator, typename ValueType>

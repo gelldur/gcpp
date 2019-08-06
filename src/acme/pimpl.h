@@ -1,4 +1,6 @@
 #pragma once
 
+#include <memory>
+
 template <class T>
-using Pimpl = const std::unique_ptr<T>;
+using Pimpl = std::unique_ptr<T>;

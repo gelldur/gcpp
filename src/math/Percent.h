@@ -14,7 +14,7 @@ class Percent
 {
 public:
 	//nominator and denominator
-	explicit Percent(T nominator, T denominator)
+	explicit constexpr Percent(T nominator, T denominator)
 		: _nominator(std::move(nominator))
 		, _denominator(std::move(denominator))
 		, _value((_nominator / _denominator))
@@ -26,6 +26,7 @@ public:
 	}
 
 	explicit Percent(T percentValue)
+	explicit constexpr Percent(T percentValue)
 		: _nominator(percentValue)
 		, _denominator(100.0)
 		, _value((_nominator / _denominator))

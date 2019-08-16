@@ -166,6 +166,16 @@ public:
 		return lhs + ((lhs * rhs._nominator) / rhs._denominator);
 	}
 
+	Percent<T> operator+(const Percent<T>& rhs) const
+	{
+		return Percent<T>{(value() + rhs.value()) * 100};
+	}
+
+	Percent<T> operator-(const Percent<T>& rhs) const
+	{
+		return Percent<T>{(value() - rhs.value()) * 100};
+	}
+
 	Percent<T> diff() const
 	{
 		return Percent<T>{_nominator - _denominator, _denominator};

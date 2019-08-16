@@ -129,18 +129,18 @@ public:
 		return *this;
 	}
 
+	Sack& operator+=(const ValueAgregate& value)
+	{
+		add(value);
+		return *this;
+	}
+
 	Sack& operator-=(const Sack& other)
 	{
 		for(const auto& element : other)
 		{
 			add(-element);
 		}
-		return *this;
-	}
-
-	Sack& operator+=(const ValueAgregate& value)
-	{
-		add(value);
 		return *this;
 	}
 
@@ -152,10 +152,20 @@ public:
 
 	Sack operator-(const Sack& other) const
 	{
-		Sack sack = *this; //cpy
+		Sack sack{*this}; //copy
 		for(const auto& element : other)
 		{
 			sack.add(-element);
+		}
+		return sack;
+	}
+
+	Sack operator+(const Sack& other) const
+	{
+		Sack sack{*this}; //copy
+		for(const auto& element : other)
+		{
+			sack.add(element);
 		}
 		return sack;
 	}

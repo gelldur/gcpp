@@ -28,6 +28,15 @@ public:
 	explicit CallOnEnd(std::function<void()> onDie) noexcept
 		: _onDie(std::move(onDie))
 	{}
+	explicit CallOnEnd() noexcept = default;
+
+	CallOnEnd(const CallOnEnd&) = delete;
+	CallOnEnd(CallOnEnd&& other)
+		: _onDie{std::move(other._onDie)}
+	{}
+
+	CallOnEnd& operator=(const CallOnEnd&) = delete;
+	CallOnEnd& operator=(CallOnEnd&&) = delete;
 
 	~CallOnEnd()
 	{

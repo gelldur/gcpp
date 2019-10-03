@@ -12,7 +12,7 @@
 #define WHERE                                                                                      \
 	(string::make(" ") + string::make(__PRETTY_FUNCTION__) + string::make(":") +                   \
 	 string::make(S2(__LINE__)) + string::make(" "))                                               \
-		.get()
+		.c_str()
 
 // It is safe to store e.g. `constexpr auto where = WHERE_STR;`
 #define WHERE_STR (string::make(__PRETTY_FUNCTION__) + ":" + string::make(S2(__LINE__)))

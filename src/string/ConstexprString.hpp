@@ -4,7 +4,6 @@
 #pragma once
 
 #include <cstddef>
-
 #include <ostream>
 #include <stdexcept>
 #include <string>
@@ -123,7 +122,7 @@ public:
 		return index < N ? _value[index] : throw std::out_of_range("Index out of range");
 	}
 
-	constexpr const char* get() const
+	constexpr const char* c_str() const
 	{
 		return _value;
 	}

@@ -35,4 +35,26 @@ constexpr auto trimPath(string::ConstexprString<N> path)
 #endif
 }
 
+// TODO make this constexpr
+template <std::size_t N>
+std::string erasePath(string::ConstexprString<N> path)
+{
+	std::string_view view(path.c_str(), path.length());
+	if(auto last = view.find_last_of('/'); last != std::string_view::npos)
+	{
+		return std::string{view.substr(last + 1)};
+	}
+
+	return std::string{view};
+}
+
+/**
+ * Macro to get e.g. my/inner/path/MyFileName.cpp:155 ([file name with project path]:[line number]
+ * It depends on WHERE_PROJECT_ROOT macro which will be used to trim absolute path of file
+ */
 #define WHERE_PATH (trimPath(string::make(__FILE__) + ":" + string::make(S2(__LINE__))))
+
+/**
+ * Macro to get e.g. MyFileName.cpp:155 ([file name]:[line number]
+ */
+#define WHERE_IN_FILE (erasePath(string::make(__FILE__) + ":" + string::make(S2(__LINE__))))

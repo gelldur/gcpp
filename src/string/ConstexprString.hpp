@@ -7,6 +7,7 @@
 #include <ostream>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <type_traits>
 #include <utility>
 
@@ -125,6 +126,11 @@ public:
 	constexpr const char* c_str() const
 	{
 		return _value;
+	}
+
+	constexpr std::string_view view() const
+	{
+		return std::string_view{_value, N};
 	}
 
 	constexpr std::size_t length() const

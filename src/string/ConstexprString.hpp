@@ -370,7 +370,7 @@ template <const std::size_t position, std::size_t N>
 constexpr auto subString(ConstexprString<N> text)
 {
 	static_assert(position < text.length(), "Out of range");
-	constexpr auto newSize = text.length() - position;
+	constexpr auto newSize = text.length() - position + 1;
 
 	return make<newSize>(text.get() + position);
 }

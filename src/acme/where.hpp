@@ -17,6 +17,9 @@
 // It is safe to store e.g. `constexpr auto where = WHERE_STR;`
 #define WHERE_STR (string::make(__PRETTY_FUNCTION__) + ":" + string::make(S2(__LINE__)))
 
+#define WHERE_EXCEPTION_TAG                                                                        \
+	("[" + string::make(__PRETTY_FUNCTION__) + ":" + string::make(S2(__LINE__)) + "] ").toString()
+
 template <std::size_t N>
 constexpr auto trimPath(string::ConstexprString<N> path)
 {

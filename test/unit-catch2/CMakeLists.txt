@@ -14,6 +14,7 @@ find_package(Catch2 2.6 REQUIRED)
 add_executable(UnitTest-gcpp-catch2
 	src/main.cpp
 	src/SuiteNiceTime.cpp
+	src/SuitePercent.cpp
 	src/SuiteSack.cpp
 	src/SuiteWhere.cpp
 	)

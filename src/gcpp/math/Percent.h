@@ -13,10 +13,20 @@ template <class T = double>
 class Percent
 {
 public:
-	// nominator and denominator
-	explicit constexpr Percent(T nominator, T denominator)
-		: _nominator(std::move(nominator))
-		, _denominator(std::move(denominator))
+	explicit constexpr Percent(const T& nominator, const T& denominator)
+		: _nominator(nominator)
+		, _denominator(denominator)
+		, _value((_nominator / _denominator))
+	{
+		if(_denominator == 0)
+		{
+			throw std::invalid_argument("Denominator can't be == 0");
+		}
+	}
+
+	explicit constexpr Percent(T&& nominator, T&& denominator)
+		: _nominator(std::forward<T>(nominator))
+		, _denominator(std::forward<T>(denominator))
 		, _value((_nominator / _denominator))
 	{
 		if(_denominator == 0)
@@ -86,7 +96,7 @@ public:
 		return _denominator;
 	}
 
-	bool isZero() const
+	[[nodiscard]] bool isZero() const
 	{
 		return _nominator == 0;
 	}

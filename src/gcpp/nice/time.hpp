@@ -6,6 +6,11 @@
 #include <chrono>
 #include <ostream>
 
+// Just use and ready to play
+#define USING_NICE_TIME                                                                            \
+	using namespace std::chrono_literals;                                                          \
+	using gcpp::nice::time::operator<<;
+
 namespace gcpp::nice::time
 {
 

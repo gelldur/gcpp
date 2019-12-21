@@ -16,43 +16,43 @@ std::ostream& operator<<(std::ostream& out, const human& time)
 	auto variable = time.data;
 	if(time.show_days && variable > 24h)
 	{
-		auto only = duration_cast<hours>(variable) / 24h;
+		const auto only = duration_cast<hours>(variable) / 24h;
 		stream << std::setw(3) << only << "d ";
 		variable -= (only * 24h);
 	}
 	if(time.show_h && variable > 1h)
 	{
-		auto only = duration_cast<hours>(variable);
+		const auto only = duration_cast<hours>(variable);
 		stream << " " << std::setw(3) << only;
 		variable -= only;
 	}
 	if(time.show_min && variable > 1min)
 	{
-		auto only = duration_cast<minutes>(variable);
+		const auto only = duration_cast<minutes>(variable);
 		stream << " " << std::setw(3) << only;
 		variable -= only;
 	}
 	if(time.show_s && variable > 1s)
 	{
-		auto only = duration_cast<seconds>(variable);
+		const auto only = duration_cast<seconds>(variable);
 		stream << " " << std::setw(3) << only;
 		variable -= only;
 	}
 	if(time.show_ms && variable > 1ms)
 	{
-		auto only = duration_cast<milliseconds>(variable);
+		const auto only = duration_cast<milliseconds>(variable);
 		stream << " " << std::setw(3) << only;
 		variable -= only;
 	}
 	if(time.show_us && variable > 1us)
 	{
-		auto only = duration_cast<microseconds>(variable);
+		const auto only = duration_cast<microseconds>(variable);
 		stream << " " << std::setw(3) << only;
 		variable -= only;
 	}
 	if(time.show_ns && variable > 1ns)
 	{
-		auto only = duration_cast<nanoseconds>(variable);
+		const auto only = duration_cast<nanoseconds>(variable);
 		stream << " " << std::setw(3) << only;
 		variable -= only;
 	}
@@ -95,7 +95,7 @@ std::ostream& operator<<(std::ostream& stream, const system_clock::time_point& t
 {
 	auto timeInfo = system_clock::to_time_t(time);
 	std::string date = std::ctime(&timeInfo);
-	if(date.empty() == false)
+	if(not date.empty())
 	{
 		date.pop_back(); // Remove extra new line
 	}

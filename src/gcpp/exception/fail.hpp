@@ -11,11 +11,11 @@
  * - common-cpp/src/acme/where.hpp
  *
  * Example call:
- * commoncpp::exception::fail_if_false(myName == "Gelldur", WHERE);
+ * gcpp::exception::fail_if_false(myName == "Gelldur", WHERE);
  *
  * Other example why I believe why this is more readable:
  *
- * commoncpp::exception::fail_if_true(std::any_of(name.begin(), name.end(), ::isspace), WHERE);
+ * gcpp::exception::fail_if_true(std::any_of(name.begin(), name.end(), ::isspace), WHERE);
  * vs
  * ASSERT(std::any_of(name.begin(), name.end(), ::isspace) == false);
  *

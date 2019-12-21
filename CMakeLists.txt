@@ -1,6 +1,6 @@
 #
 cmake_minimum_required(VERSION 3.11)
-project(gcpp
+project(gcpp-dev
 	VERSION 2.0.0
 	LANGUAGES CXX
 	)
@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # For development
-add_library(gcppLib
+add_library(gcpp
 	src/gcpp/color.hpp
 	src/gcpp/container/acme.h
 	src/gcpp/container/Sack.h
@@ -36,11 +36,11 @@ add_library(gcppLib
 	#	src/gcpp/wrapper/lib/poco/PocoRequest.cpp src/gcpp/wrapper/lib/poco/PocoRequest.h
 	)
 
-target_compile_definitions(gcppLib PUBLIC WHERE_PROJECT_ROOT="${CMAKE_CURRENT_SOURCE_DIR}")
+target_compile_definitions(gcpp PUBLIC WHERE_PROJECT_ROOT="${CMAKE_CURRENT_SOURCE_DIR}")
 
-target_include_directories(gcppLib PUBLIC src/)
+target_include_directories(gcpp PUBLIC src/)
 
-target_compile_options(gcppLib
+target_compile_options(gcpp
 	PUBLIC
 	-Wall -Wpedantic -Wextra
 	-Wnon-virtual-dtor

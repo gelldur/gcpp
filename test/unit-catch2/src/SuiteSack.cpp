@@ -3,20 +3,69 @@
 //
 #include <iostream>
 
-#include <catch.hpp>
-#include <data/Currency.h>
-#include <data/Sack.h>
+#include <catch2/catch.hpp>
+
+#include "gcpp/container/Sack.h"
+
+using gcpp::container::Sack;
+
+namespace gcpp::test
+{
+
+class Currency
+{
+public:
+	enum class Type
+	{
+		None,
+		ADA,
+		BTC,
+		ETH,
+		BNB
+	};
+
+	Currency(Type type, int value)
+		: _value(value)
+		, _type(type)
+	{}
+
+	Currency(Type type)
+		: _value(0)
+		, _type(type)
+	{}
+
+	[[nodiscard]] int getValue() const
+	{
+		return _value;
+	}
+
+	[[nodiscard]] Type getType() const
+	{
+		return _type;
+	}
+
+	Currency& operator+=(const Currency& other)
+	{
+		assert(_type == other._type);
+		_value += other.getValue();
+		return *this;
+	}
+
+private:
+	int _value = 0;
+	Type _type = Type::None;
+};
 
 TEST_CASE("Should copy assign without anny issues", "[Sack]")
 {
-	Sack<Currency> sack1;
+	gcpp::container::Sack<Currency> sack1;
 	{
 		sack1.add(Currency{Currency::Type::ADA, 1});
 		sack1.add(Currency{Currency::Type::BTC, 1});
 		sack1.add(Currency{Currency::Type::ADA, 1});
 		sack1.add(Currency{Currency::Type::ETH, 1});
 	}
-	Sack<Currency> sack2;
+	gcpp::container::Sack<Currency> sack2;
 	{
 		sack2.add(Currency{Currency::Type::ADA, 1});
 		sack2.add(Currency{Currency::Type::BTC, 1});
@@ -40,14 +89,14 @@ TEST_CASE("Should copy assign without anny issues", "[Sack]")
 
 TEST_CASE("Should copy assign without anny issues When different order", "[Sack]")
 {
-	Sack<Currency> sack1;
+	gcpp::container::Sack<Currency> sack1;
 	{
 		sack1.add(Currency{Currency::Type::ADA, 1});
 		sack1.add(Currency{Currency::Type::BTC, 1});
 		sack1.add(Currency{Currency::Type::ADA, 1});
 		sack1.add(Currency{Currency::Type::ETH, 1});
 	}
-	Sack<Currency> sack2;
+	gcpp::container::Sack<Currency> sack2;
 	{
 		sack2.add(Currency{Currency::Type::ADA, 1});
 		sack2.add(Currency{Currency::Type::ETH, 1});
@@ -70,11 +119,11 @@ TEST_CASE("Should copy assign without anny issues When different order", "[Sack]
 
 TEST_CASE("Should copy assign without anny issues When different content", "[Sack]")
 {
-	Sack<Currency> sack1;
+	gcpp::container::Sack<Currency> sack1;
 	{
 		sack1.add(Currency{Currency::Type::ADA, 1});
 	}
-	Sack<Currency> sack2;
+	gcpp::container::Sack<Currency> sack2;
 	{
 		sack2.add(Currency{Currency::Type::ETH, 1});
 	}
@@ -90,11 +139,11 @@ TEST_CASE("Should copy assign without anny issues When different content", "[Sac
 
 TEST_CASE("Should move assign without anny issues When different content", "[Sack]")
 {
-	Sack<Currency> sack1;
+	gcpp::container::Sack<Currency> sack1;
 	{
 		sack1.add(Currency{Currency::Type::ADA, 1});
 	}
-	Sack<Currency> sack2;
+	gcpp::container::Sack<Currency> sack2;
 	{
 		sack2.add(Currency{Currency::Type::ETH, 1});
 	}
@@ -106,3 +155,5 @@ TEST_CASE("Should move assign without anny issues When different content", "[Sac
 
 	REQUIRE(sack2.get(Currency::Type::ADA).getValue() == 1);
 }
+
+} // namespace gcpp::test

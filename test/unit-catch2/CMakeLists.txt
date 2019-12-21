@@ -13,7 +13,8 @@ find_package(Catch2 2.6 REQUIRED)
 # Target definition
 add_executable(UnitTest-gcpp-catch2
 	src/main.cpp
-	src/SuiteWhere.cpp
+	src/SuiteNiceTime.cpp
+	src/SuiteSack.cpp
 	src/SuiteWhere.cpp
 	)
 
@@ -24,6 +25,6 @@ set(DEBUG_FLAGS
 	)
 
 target_compile_options(UnitTest-gcpp-catch2 PUBLIC "$<$<CONFIG:DEBUG>:${DEBUG_FLAGS}>")
-target_link_libraries(UnitTest-gcpp-catch2 PUBLIC gcppLib Catch2::Catch2)
+target_link_libraries(UnitTest-gcpp-catch2 PUBLIC gcpp Catch2::Catch2)
 
 add_test(NAME gcpp-catch2.UnitTests COMMAND UnitTest-gcpp-catch2)

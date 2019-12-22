@@ -30,9 +30,13 @@
 namespace gcpp::exception
 {
 
-void fail_here(std::string_view where) noexcept(false);
+void fail_here(std::string_view where, std::string_view description = "") noexcept(false);
 
-void fail_if_false(bool valueToCheck, std::string_view where) noexcept(false);
-void fail_if_true(bool valueToCheck, std::string_view where) noexcept(false);
+void fail_if_false(bool valueToCheck,
+				   std::string_view where,
+				   std::string_view description = "") noexcept(false);
+void fail_if_true(bool valueToCheck,
+				  std::string_view where,
+				  std::string_view description = "") noexcept(false);
 
 } // namespace gcpp::exception

@@ -10,7 +10,7 @@ namespace gcpp::exception
 
 std::string trimFromSrcFolder(const std::string_view where)
 {
-	const std::string_view srcPart{"src/"};
+	constexpr std::string_view srcPart{"src/"};
 	const auto srcPosition = where.rfind(srcPart);
 	if(srcPosition != std::string::npos)
 	{
@@ -19,36 +19,62 @@ std::string trimFromSrcFolder(const std::string_view where)
 	return std::string{where};
 }
 
-void fail_if_false(const bool valueToCheck, const std::string_view where)
+void fail_if_false(const bool valueToCheck,
+				   const std::string_view where,
+				   const std::string_view description)
 {
 	if(valueToCheck == false)
 	{
-		throw std::runtime_error{"Fail at: " + trimFromSrcFolder(where)};
+		std::string message = "Fail at: " + trimFromSrcFolder(where);
+		if(not description.empty())
+		{
+			message += ". " + std::string{description};
+		}
+		throw std::runtime_error{message};
 	}
 	// All ok!
 }
 
-void fail_if_true(const bool valueToCheck, const std::string_view where)
+void fail_if_true(const bool valueToCheck,
+				  const std::string_view where,
+				  const std::string_view description)
 {
 	if(valueToCheck)
 	{
-		throw std::runtime_error{"Fail at: " + trimFromSrcFolder(where)};
+		std::string message = "Fail at: " + trimFromSrcFolder(where);
+		if(not description.empty())
+		{
+			message += ". " + std::string{description};
+		}
+		throw std::runtime_error{message};
 	}
 	// All ok!
 }
 
-void fail_if_null(const void* pointer, const std::string_view where)
+void fail_if_null(const void* pointer,
+				  const std::string_view where,
+				  const std::string_view description)
 {
 	if(pointer == nullptr)
 	{
-		throw std::runtime_error{"Fail at: " + trimFromSrcFolder(where)};
+		std::string message = "Fail at: " + trimFromSrcFolder(where);
+		if(not description.empty())
+		{
+			message += ". " + std::string{description};
+		}
+		throw std::runtime_error{message};
 	}
 	// All ok!
 }
 
-void fail_here(const std::string_view where)
+void fail_here(const std::string_view where, const std::string_view description)
 {
-	throw std::runtime_error{"Fail at: " + trimFromSrcFolder(where)};
+	std::string message = "Fail at: " + trimFromSrcFolder(where);
+	if(not description.empty())
+	{
+		message += ". " + std::string{description};
+	}
+	throw std::runtime_error{message};
 }
 
 } // namespace gcpp::exception

@@ -5,6 +5,7 @@
 
 #include <chrono>
 #include <ostream>
+#include <string>
 
 // Just use and ready to play
 #define USING_NICE_TIME                                                                            \
@@ -25,47 +26,15 @@ struct human
 	bool show_h : 1;
 	bool show_days : 1;
 
-	explicit human(const std::chrono::nanoseconds& nanos)
-		: data(nanos)
-		, show_ns{true}
-		, show_us{true}
-		, show_ms{true}
-		, show_s{true}
-		, show_min{true}
-		, show_h{true}
-		, show_days{true}
-	{}
-
-	explicit human(const std::chrono::microseconds& nanos)
-		: data(nanos)
-		, show_ns{false}
-		, show_us{true}
-		, show_ms{true}
-		, show_s{true}
-		, show_min{true}
-		, show_h{true}
-		, show_days{true}
-	{}
-
-	explicit human(const std::chrono::milliseconds& nanos)
-		: data(nanos)
-		, show_ns{false}
-		, show_us{false}
-		, show_ms{true}
-		, show_s{true}
-		, show_min{true}
-		, show_h{true}
-		, show_days{true}
-	{}
-
-	explicit human(const std::chrono::seconds& nanos)
-		: data(nanos)
-		, show_ns{false}
-		, show_us{false}
-		, show_ms{false}
-		, show_s{true}
-		, show_min{true}
-		, show_h{true}
+	template <typename Rep, typename Period>
+	constexpr explicit human(std::chrono::duration<Rep, Period>&& showFrom)
+		: data(std::forward<std::chrono::duration<Rep, Period>>(showFrom))
+		, show_ns{std::ratio_less_equal_v<Period, std::chrono::nanoseconds::period>}
+		, show_us{std::ratio_less_equal_v<Period, std::chrono::microseconds::period>}
+		, show_ms{std::ratio_less_equal_v<Period, std::chrono::milliseconds::period>}
+		, show_s{std::ratio_less_equal_v<Period, std::chrono::seconds::period>}
+		, show_min{std::ratio_less_equal_v<Period, std::chrono::minutes::period>}
+		, show_h{std::ratio_less_equal_v<Period, std::chrono::hours::period>}
 		, show_days{true}
 	{}
 
@@ -82,3 +51,8 @@ std::ostream& operator<<(std::ostream& stream, const std::chrono::nanoseconds& d
 std::ostream& operator<<(std::ostream& stream, const std::chrono::system_clock::time_point& time);
 
 } // namespace gcpp::nice::time
+
+namespace gcpp
+{
+std::string toString(const gcpp::nice::time::human& value);
+}

@@ -51,8 +51,3 @@ std::ostream& operator<<(std::ostream& stream, const std::chrono::nanoseconds& d
 std::ostream& operator<<(std::ostream& stream, const std::chrono::system_clock::time_point& time);
 
 } // namespace gcpp::nice::time
-
-namespace gcpp
-{
-std::string toString(const gcpp::nice::time::human& value);
-}

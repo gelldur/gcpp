@@ -193,7 +193,9 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& stream, const Percent& percent)
 	{
-		stream << percent.value() * 100.0 << "%";
+		std::stringstream localStream;
+		localStream << percent.percentValue() << '%';
+		stream << localStream.str();
 		return stream;
 	}
 

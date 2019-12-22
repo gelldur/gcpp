@@ -25,6 +25,7 @@ add_library(gcpp
 	src/gcpp/math/traits.h
 	src/gcpp/nice/number.cpp src/gcpp/nice/number.hpp
 	src/gcpp/nice/time.cpp src/gcpp/nice/time.hpp
+	src/gcpp/nice/to_string.hpp
 	src/gcpp/pimpl.h
 	src/gcpp/random/MersenneTwister.cpp src/gcpp/random/MersenneTwister.h
 	src/gcpp/string/acme.cpp src/gcpp/string/acme.hpp
@@ -32,8 +33,6 @@ add_library(gcpp
 	src/gcpp/time.cpp src/gcpp/time.hpp
 	src/gcpp/type_name.h
 	src/gcpp/where.hpp
-	#	src/gcpp/wrapper/lib/poco/MessageStream.cpp src/gcpp/wrapper/lib/poco/MessageStream.hpp
-	#	src/gcpp/wrapper/lib/poco/PocoRequest.cpp src/gcpp/wrapper/lib/poco/PocoRequest.h
 	)
 
 target_compile_definitions(gcpp PUBLIC WHERE_PROJECT_ROOT="${CMAKE_CURRENT_SOURCE_DIR}")

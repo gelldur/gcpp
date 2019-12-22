@@ -148,15 +148,3 @@ std::ostream& operator<<(std::ostream& stream, const system_clock::time_point& t
 }
 
 } // namespace gcpp::nice::time
-
-namespace gcpp
-{
-
-std::string toString(const gcpp::nice::time::human& value)
-{
-	std::stringstream stream;
-	stream << value;
-	return stream.str();
-}
-
-} // namespace gcpp

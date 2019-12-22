@@ -38,6 +38,18 @@ struct human
 		, show_days{true}
 	{}
 
+	template <typename Rep, typename Period>
+	constexpr explicit human(const std::chrono::duration<Rep, Period>& showFrom)
+		: data(showFrom)
+		, show_ns{std::ratio_less_equal_v<Period, std::chrono::nanoseconds::period>}
+		, show_us{std::ratio_less_equal_v<Period, std::chrono::microseconds::period>}
+		, show_ms{std::ratio_less_equal_v<Period, std::chrono::milliseconds::period>}
+		, show_s{std::ratio_less_equal_v<Period, std::chrono::seconds::period>}
+		, show_min{std::ratio_less_equal_v<Period, std::chrono::minutes::period>}
+		, show_h{std::ratio_less_equal_v<Period, std::chrono::hours::period>}
+		, show_days{true}
+	{}
+
 	friend std::ostream& operator<<(std::ostream& stream, const human& time);
 };
 

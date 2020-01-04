@@ -30,6 +30,8 @@ add_library(gcpp
 	src/gcpp/random/MersenneTwister.cpp src/gcpp/random/MersenneTwister.h
 	src/gcpp/string/acme.cpp src/gcpp/string/acme.hpp
 	src/gcpp/string/ConstexprString.hpp
+	src/gcpp/string/from_string.cpp src/gcpp/string/from_string.hpp
+	src/gcpp/string/to_string.cpp src/gcpp/string/to_string.hpp
 	src/gcpp/time.cpp src/gcpp/time.hpp
 	src/gcpp/type_name.h
 	src/gcpp/where.hpp

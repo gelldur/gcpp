@@ -7,6 +7,7 @@
 
 #include "gcpp/nice/time.hpp"
 #include "gcpp/nice/to_string.hpp"
+#include "gcpp/string/from_string.hpp"
 
 using namespace std::chrono;
 
@@ -37,6 +38,17 @@ TEST_CASE("Should format as desired", "[NiceTime]")
 	REQUIRE(gcpp::nice::toString(gcpp::nice::time::human{3ns}) == "3ns");
 	REQUIRE(gcpp::nice::toString(gcpp::nice::time::human{6ns + 5us + 4ms + 3s + 2min + 1h}) ==
 			"1h 2m 3s 4ms 5µs 6ns");
+}
+
+TEST_CASE("Should format as UTC time point", "[NiceTime]")
+{
+	const auto timePoint = gcpp::string::from_string::parseTimeISO8601("2020-01-04 10:43:44");
+	REQUIRE(timePoint.has_value());
+
+	std::stringstream stream;
+	stream << timePoint.value();
+
+	REQUIRE(stream.str() == "2020-01-04 10:43:44");
 }
 
 namespace my::other::name::space

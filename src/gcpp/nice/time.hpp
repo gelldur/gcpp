@@ -60,6 +60,9 @@ std::ostream& operator<<(std::ostream& stream, const std::chrono::milliseconds& 
 std::ostream& operator<<(std::ostream& stream, const std::chrono::microseconds& duration);
 std::ostream& operator<<(std::ostream& stream, const std::chrono::nanoseconds& duration);
 
+/**
+ * Format time in ISO 8601 (YYYY-MM-DD hh:mm:ss)
+ */
 std::ostream& operator<<(std::ostream& stream, const std::chrono::system_clock::time_point& time);
 
 } // namespace gcpp::nice::time

@@ -3,7 +3,12 @@
 //
 #include "gcpp/nice/time.hpp"
 
+#include <array>
+#include <ctime>
 #include <iomanip>
+#include <string_view>
+
+#include "gcpp/string/to_string.hpp"
 
 using namespace std::chrono;
 
@@ -138,13 +143,7 @@ std::ostream& operator<<(std::ostream& stream, const nanoseconds& duration)
 
 std::ostream& operator<<(std::ostream& stream, const system_clock::time_point& time)
 {
-	auto timeInfo = system_clock::to_time_t(time);
-	std::string date = std::ctime(&timeInfo);
-	if(not date.empty())
-	{
-		date.pop_back(); // Remove extra new line
-	}
-	return stream << date;
+	return string::to_string::asISO8601(stream, time);
 }
 
 } // namespace gcpp::nice::time

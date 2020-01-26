@@ -213,6 +213,18 @@ public:
 		}
 	}
 
+	void erase(const Type& type)
+	{
+		for(auto it = _data.begin(); it != _data.end(); ++it)
+		{
+			if(it->getType() == type)
+			{
+				_data.erase(it);
+				return;
+			}
+		}
+	}
+
 	friend std::ostream& operator<<(std::ostream& stream, const Sack& sack)
 	{
 		stream << "Sack{ ";

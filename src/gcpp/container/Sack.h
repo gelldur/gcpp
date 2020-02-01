@@ -173,6 +173,16 @@ public:
 		return sack;
 	}
 
+	bool operator==(const Sack& rhs) const
+	{
+		return _data == rhs._data;
+	}
+
+	bool operator!=(const Sack& rhs) const
+	{
+		return !(rhs == *this);
+	}
+
 	std::size_t size() const
 	{
 		return _data.size();

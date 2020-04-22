@@ -39,26 +39,26 @@ public:
 		: _nominator(percentValue)
 		, _denominator(100.0)
 		, _value((_nominator / _denominator))
-	{}
+	{ }
 
 	Percent(const Percent& other)
 		: _nominator(other._nominator)
 		, _denominator(other._denominator)
 		, _value(other._value)
-	{}
+	{ }
 
 	Percent(Percent&& other)
 		: _nominator(std::move(other._nominator))
 		, _denominator(std::move(other._denominator))
 		, _value(std::move(other._value))
-	{}
+	{ }
 
 	template <typename E>
 	Percent(const Percent<E>& other)
 		: _nominator(other.getNominator())
 		, _denominator(other.getDenominator())
 		, _value((_nominator / _denominator))
-	{}
+	{ }
 
 	Percent& operator=(const Percent& other)
 	{
@@ -184,6 +184,16 @@ public:
 	Percent<T> operator-(const Percent<T>& rhs) const
 	{
 		return Percent<T>{(value() - rhs.value()) * 100};
+	}
+
+	Percent<T> operator*(const Percent<T>& rhs) const
+	{
+		return Percent<T>{_nominator * rhs._nominator, _denominator * rhs._denominator};
+	}
+
+	Percent<T> operator-() const
+	{
+		return Percent<T>{-_nominator, _denominator};
 	}
 
 	Percent<T> diff() const

@@ -18,4 +18,10 @@ namespace gcpp::string::from_string
  */
 std::optional<std::chrono::system_clock::time_point> parseTimeISO8601(std::string_view text);
 
+/**
+ * Same as parseTimeISO8601 but parse also milliseconds: YYYY-MM-DD hh:mm:ss.ZZZ
+ */
+std::optional<std::chrono::system_clock::time_point> parseTimeISO8601WithFraction(
+	std::string_view text);
+
 } // namespace gcpp::string::from_string

@@ -377,7 +377,7 @@ constexpr auto subString(ConstexprString<N> text)
 	static_assert(position < text.length(), "Out of range");
 	constexpr auto newSize = text.length() - position + 1;
 
-	return make<newSize>(text.get() + position);
+	return make<newSize>(text.c_str() + position);
 }
 
 } // namespace gcpp::string

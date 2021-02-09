@@ -7,6 +7,8 @@
 #define S1(x) #x
 #define S2(x) S1(x)
 
+// TODO consider using C++20 feature [source_location](https://en.cppreference.com/w/cpp/utility/source_location)
+
 // WHERE - const char* const should be used as temporary value
 // E.g. std::cout << WHERE << std::endl;
 #define WHERE                                                                                      \

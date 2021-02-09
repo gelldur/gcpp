@@ -37,3 +37,21 @@ TEST_CASE("Should format nice", "[math][Percent]")
 		REQUIRE(stream.str().size() == 8);
 	}
 }
+
+TEST_CASE("Multiply by percent", "[math][Percent]")
+{
+	SECTION("Same underlying type")
+	{
+		const Percent<double> tenPercent{10};
+		const double value = 2;
+		REQUIRE(value * tenPercent == Approx(0.2).epsilon(0.001));
+		REQUIRE(value * tenPercent == tenPercent * value);
+	}
+	SECTION("Different underlying type")
+	{
+		const Percent<double> tenPercent{10};
+		const int value = 2;
+		REQUIRE(value * tenPercent == 0);
+		REQUIRE(value * tenPercent == tenPercent * value);
+	};
+}

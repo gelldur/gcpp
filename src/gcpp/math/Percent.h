@@ -10,7 +10,7 @@ namespace gcpp::math
 {
 
 template <class T = double>
-class Percent
+class [[nodiscard]] Percent
 {
 public:
 	explicit constexpr Percent(const T& nominator, const T& denominator)
@@ -35,8 +35,8 @@ public:
 		}
 	}
 
-	explicit constexpr Percent(T percentValue)
-		: _nominator(percentValue)
+	explicit constexpr Percent(T&& percentValue)
+		: _nominator(std::forward<T>(percentValue))
 		, _denominator(100.0)
 		, _value((_nominator / _denominator))
 	{ }
@@ -47,14 +47,14 @@ public:
 		, _value(other._value)
 	{ }
 
-	Percent(Percent&& other)
+	Percent(Percent&& other) noexcept
 		: _nominator(std::move(other._nominator))
 		, _denominator(std::move(other._denominator))
 		, _value(std::move(other._value))
 	{ }
 
 	template <typename E>
-	Percent(const Percent<E>& other)
+	explicit Percent(const Percent<E>& other)
 		: _nominator(other.getNominator())
 		, _denominator(other.getDenominator())
 		, _value((_nominator / _denominator))
@@ -68,7 +68,7 @@ public:
 		return *this;
 	}
 
-	Percent& operator=(Percent&& other)
+	Percent& operator=(Percent&& other) noexcept
 	{
 		_nominator = std::move(other._nominator);
 		_denominator = std::move(other._denominator);
@@ -76,22 +76,22 @@ public:
 		return *this;
 	}
 
-	const T& value() const
+	[[nodiscard]] const T& value() const
 	{
 		return _value;
 	}
 
-	T percentValue() const
+	[[nodiscard]] T percentValue() const
 	{
 		return value() * 100;
 	}
 
-	const T& getNominator() const
+	[[nodiscard]] const T& getNominator() const
 	{
 		return _nominator;
 	}
 
-	const T& getDenominator() const
+	[[nodiscard]] const T& getDenominator() const
 	{
 		return _denominator;
 	}
@@ -189,6 +189,12 @@ public:
 	Percent<T> operator*(const Percent<T>& rhs) const
 	{
 		return Percent<T>{_nominator * rhs._nominator, _denominator * rhs._denominator};
+	}
+
+	template <typename O>
+	O operator*(const O& rhs) const
+	{
+		return value() * rhs;
 	}
 
 	Percent<T> operator-() const

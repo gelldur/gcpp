@@ -186,9 +186,14 @@ public:
 		return Percent<T>{(value() - rhs.value()) * 100};
 	}
 
-	Percent<T> operator*(const Percent<T>& rhs) const
+	Percent operator*(const Percent<T>& rhs) const
 	{
-		return Percent<T>{_nominator * rhs._nominator, _denominator * rhs._denominator};
+		return Percent{_nominator * rhs._nominator, _denominator * rhs._denominator};
+	}
+
+	Percent<T> operator/(const Percent<T>& rhs) const
+	{
+		return Percent<T>{_nominator * rhs._denominator, _denominator * rhs._nominator};
 	}
 
 	template <typename O>

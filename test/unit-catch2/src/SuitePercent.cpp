@@ -55,3 +55,40 @@ TEST_CASE("Multiply by percent", "[math][Percent]")
 		REQUIRE(value * tenPercent == tenPercent * value);
 	};
 }
+
+TEST_CASE("Percent * Percent", "[math][Percent]")
+{
+	SECTION("Same underlying type")
+	{
+		const Percent<double> a{10};
+		const Percent<double> b{65};
+		REQUIRE((a * b).value() == Approx(0.065).epsilon(0.001));
+		REQUIRE((a * b).percentValue() == Approx(6.5).epsilon(0.001));
+		REQUIRE(b * a == a * b);
+	}
+	// TODO implement
+	//	SECTION("Different underlying type")
+	//	{
+	//		const Percent<double> a{10};
+	//		const Percent<int> b{65};
+	//		REQUIRE(b * a == a * b);
+	//		REQUIRE((a * b).value() == ?);
+	//	};
+}
+
+TEST_CASE("Percent / Percent", "[math][Percent]")
+{
+	SECTION("Same underlying type")
+	{
+		const Percent<double> a{10};
+		const Percent<double> b{65};
+		REQUIRE((a / b).value() == Approx(0.1538).epsilon(0.001));
+	}
+	// TODO implement
+	//	SECTION("Different underlying type")
+	//	{
+	//		const Percent<double> a{10};
+	//		const Percent<int> b{65};
+	//		REQUIRE((a / b).value() == ?);
+	//	};
+}

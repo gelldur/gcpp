@@ -53,7 +53,7 @@ TEST_CASE("Multiply by percent", "[math][Percent]")
 		const int value = 2;
 		REQUIRE(value * tenPercent == 0);
 		REQUIRE(value * tenPercent == tenPercent * value);
-	};
+	}
 }
 
 TEST_CASE("Percent * Percent", "[math][Percent]")

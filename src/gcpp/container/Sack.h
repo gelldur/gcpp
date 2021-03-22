@@ -10,33 +10,33 @@
 namespace gcpp::container
 {
 
-template <typename ValueAgregate>
+template <typename ValueAggregate>
 class Sack
 {
-	using container = std::vector<ValueAgregate>;
+	using container = std::vector<ValueAggregate>;
 
 public:
 	using const_iterator = typename container::const_iterator;
 	using iterator = typename container::iterator;
-	using Type = typename ValueAgregate::Type;
+	using Type = typename ValueAggregate::Type;
 
 	Sack() = default;
 
 	Sack(const Sack& other)
 		: _data{other._data}
-	{}
+	{ }
 
 	Sack(Sack&& other) noexcept
 		: _data{std::move(other._data)}
-	{}
+	{ }
 
-	Sack(std::initializer_list<ValueAgregate> initList)
+	Sack(std::initializer_list<ValueAggregate> initList)
 		: _data{std::move(initList)}
-	{}
+	{ }
 
 	Sack(container initList)
 		: _data{std::move(initList)}
-	{}
+	{ }
 
 	Sack& operator=(const Sack& other)
 	{
@@ -51,7 +51,7 @@ public:
 		return *this;
 	}
 
-	void add(const ValueAgregate& value)
+	void add(const ValueAggregate& value)
 	{
 		auto found = find(value.getType());
 		if(found == end())
@@ -64,7 +64,7 @@ public:
 		}
 	}
 
-	void add(ValueAgregate&& value)
+	void add(ValueAggregate&& value)
 	{
 		auto found = find(value.getType());
 		if(found == end())
@@ -77,7 +77,7 @@ public:
 		}
 	}
 
-	void set(const ValueAgregate& value)
+	void set(const ValueAggregate& value)
 	{
 		auto found = find(value.getType());
 		if(found == end())
@@ -90,7 +90,7 @@ public:
 		}
 	}
 
-	void set(ValueAgregate&& value)
+	void set(ValueAggregate&& value)
 	{
 		auto found = find(value.getType());
 		if(found == end())
@@ -103,12 +103,12 @@ public:
 		}
 	}
 
-	ValueAgregate get(Type type) const
+	ValueAggregate get(Type type) const
 	{
 		auto found = find(type);
 		if(found == end())
 		{
-			return ValueAgregate{type};
+			return ValueAggregate{type};
 		}
 		return *found;
 	}
@@ -132,7 +132,7 @@ public:
 		return *this;
 	}
 
-	Sack& operator+=(const ValueAgregate& value)
+	Sack& operator+=(const ValueAggregate& value)
 	{
 		add(value);
 		return *this;
@@ -147,7 +147,7 @@ public:
 		return *this;
 	}
 
-	Sack& operator-=(const ValueAgregate& value)
+	Sack& operator-=(const ValueAggregate& value)
 	{
 		add(-value);
 		return *this;
@@ -200,16 +200,17 @@ public:
 
 	iterator find(const Type& searchType)
 	{
-		return std::find_if(_data.begin(), _data.end(), [searchType](const ValueAgregate& value) {
+		return std::find_if(_data.begin(), _data.end(), [searchType](const ValueAggregate& value) {
 			return value.getType() == searchType;
 		});
 	}
 
 	const_iterator find(const Type& searchType) const
 	{
-		return std::find_if(_data.cbegin(), _data.cend(), [searchType](const ValueAgregate& value) {
-			return value.getType() == searchType;
-		});
+		return std::find_if(
+			_data.cbegin(), _data.cend(), [searchType](const ValueAggregate& value) {
+				return value.getType() == searchType;
+			});
 	}
 
 	template <class Predicate>
@@ -240,7 +241,7 @@ public:
 		stream << "Sack{ ";
 		auto copy = sack._data;
 		std::sort(
-			copy.begin(), copy.end(), [](const ValueAgregate& left, const ValueAgregate& right) {
+			copy.begin(), copy.end(), [](const ValueAggregate& left, const ValueAggregate& right) {
 				return left.getType() < right.getType();
 			});
 		for(const auto& element : copy)
@@ -252,7 +253,7 @@ public:
 	}
 
 private:
-	std::vector<ValueAgregate> _data;
+	std::vector<ValueAggregate> _data;
 };
 
 } // namespace gcpp::container

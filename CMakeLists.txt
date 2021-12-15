@@ -20,7 +20,7 @@ add_library(gcpp
 	src/gcpp/i18n/i18n.h
 	src/gcpp/input/SecretCin.cpp src/gcpp/input/SecretCin.h
 	src/gcpp/math/Bezier.h
-	src/gcpp/math/Percent.h
+	src/gcpp/math/Percent.h src/gcpp/math/Percent.cpp
 	src/gcpp/math/Point.h
 	src/gcpp/math/traits.h
 	src/gcpp/nice/number.cpp src/gcpp/nice/number.hpp

@@ -16,6 +16,11 @@ TEST_CASE("Should percent", "[math][Percent]")
 	REQUIRE(Percent<double>{10}.value() == Approx(0.1).epsilon(0.001));
 	REQUIRE(Percent<double>{100}.value() == Approx(1).epsilon(0.00001));
 	REQUIRE(Percent<double>{1, 3}.value() == Approx(0.333).epsilon(0.01));
+
+	REQUIRE(1_bps == Percent<long double>{0.01L});
+	REQUIRE(100_bps == Percent<long double>{1});
+
+	REQUIRE((1_bps).value() == Approx(0.0001).epsilon(0.01));
 }
 
 TEST_CASE("Should format nice", "[math][Percent]")
@@ -53,6 +58,11 @@ TEST_CASE("Multiply by percent", "[math][Percent]")
 		const int value = 2;
 		REQUIRE(value * tenPercent == 0);
 		REQUIRE(value * tenPercent == tenPercent * value);
+	}
+	SECTION("Transitivity")
+	{
+		REQUIRE(2.F * Percent<double>{0.1} == Approx(0.002).epsilon(0.0001));
+		REQUIRE(Percent<double>{0.1} * 2.F == Approx(0.002).epsilon(0.0001));
 	}
 }
 

@@ -13,6 +13,12 @@ template <class T = double>
 class [[nodiscard]] Percent
 {
 public:
+	explicit Percent() // by default 0%
+		: _nominator{0}
+		, _denominator{1}
+		, _value(0)
+	{ }
+
 	explicit constexpr Percent(const T& nominator, const T& denominator)
 		: _nominator(nominator)
 		, _denominator(denominator)
@@ -73,6 +79,15 @@ public:
 		_nominator = std::move(other._nominator);
 		_denominator = std::move(other._denominator);
 		_value = std::move(other._value);
+		return *this;
+	}
+
+	template <typename E>
+	Percent& operator=(const Percent<E>& other) noexcept
+	{
+		_nominator = other.getNominator();
+		_denominator = other.getDenominator();
+		_value = (_nominator / _denominator);
 		return *this;
 	}
 
@@ -225,5 +240,19 @@ private:
 	T _denominator;
 	T _value; // Fast cache
 };
+
+template <typename T, typename O>
+inline Percent<T> multiply(const O& lhs, const Percent<T>& rhs)
+{
+	return Percent<T>{lhs * rhs.getNominator(), rhs.getDenominator()};
+}
+
+inline namespace percent_literals
+{
+
+Percent<long double> operator"" _bps(long double);
+Percent<long double> operator"" _bps(unsigned long long int);
+
+} // namespace percent_literals
 
 } // namespace gcpp::math

@@ -15,8 +15,11 @@ namespace gcpp::string::to_string
  * @param timePointUTC
  * @return
  */
-std::string formatTimeISO8601(std::chrono::system_clock::time_point timePointUTC);
+std::string formatTimeISO8601(std::chrono::system_clock::time_point timePointUTC,
+							  bool withFractional = false);
 
-std::ostream& asISO8601(std::ostream& stream, std::chrono::system_clock::time_point timePointUTC);
+std::ostream& asISO8601(std::ostream& stream,
+						std::chrono::system_clock::time_point timePointUTC,
+						bool withFractional = false);
 
 } // namespace gcpp::string::to_string

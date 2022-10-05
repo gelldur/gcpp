@@ -36,7 +36,7 @@ struct human
 		, show_min{std::ratio_less_equal_v<Period, std::chrono::minutes::period>}
 		, show_h{std::ratio_less_equal_v<Period, std::chrono::hours::period>}
 		, show_days{true}
-	{}
+	{ }
 
 	template <typename Rep, typename Period>
 	constexpr explicit human(const std::chrono::duration<Rep, Period>& showFrom)
@@ -48,7 +48,7 @@ struct human
 		, show_min{std::ratio_less_equal_v<Period, std::chrono::minutes::period>}
 		, show_h{std::ratio_less_equal_v<Period, std::chrono::hours::period>}
 		, show_days{true}
-	{}
+	{ }
 
 	friend std::ostream& operator<<(std::ostream& stream, const human& time);
 };
@@ -64,5 +64,19 @@ std::ostream& operator<<(std::ostream& stream, const std::chrono::nanoseconds& d
  * Format time in ISO 8601 (YYYY-MM-DD hh:mm:ss)
  */
 std::ostream& operator<<(std::ostream& stream, const std::chrono::system_clock::time_point& time);
+
+struct asISO8601
+{
+	// example: "2020-01-04 10:43:44"
+	// example: "2020-01-04 10:43:44.099"
+	asISO8601(const std::chrono::system_clock::time_point& time, bool withMilliseconds = false)
+		: time{time}
+		, withMilliseconds{withMilliseconds}
+	{ }
+	const std::chrono::system_clock::time_point& time;
+	const bool withMilliseconds : 1;
+
+	friend std::ostream& operator<<(std::ostream& os, const asISO8601& iso8601);
+};
 
 } // namespace gcpp::nice::time

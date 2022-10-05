@@ -1,6 +1,7 @@
 //
 // Created by gelldur on 21.12.2019.
 //
+#include <iomanip>
 #include <sstream>
 
 #include <catch2/catch.hpp>
@@ -49,6 +50,51 @@ TEST_CASE("Should format as UTC time point", "[NiceTime]")
 	stream << timePoint.value();
 
 	REQUIRE(stream.str() == "2020-01-04 10:43:44");
+}
+
+TEST_CASE("Should nice format as ISO8601", "[NiceTime]")
+{
+	auto timePoint = gcpp::string::from_string::parseTimeISO8601("2020-01-04 10:43:44");
+	REQUIRE(timePoint.has_value());
+
+	std::stringstream stream;
+	SECTION("Default without milliseconds")
+	{
+		timePoint.value() += 321ms;
+		stream << gcpp::nice::time::asISO8601{timePoint.value()};
+		REQUIRE(stream.str() == "2020-01-04 10:43:44");
+	}
+	SECTION("With milliseconds")
+	{
+		timePoint.value() += 321ms;
+		stream << gcpp::nice::time::asISO8601{timePoint.value(), true};
+		REQUIRE(stream.str() == "2020-01-04 10:43:44.321");
+	}
+	SECTION("With milliseconds and leading 0")
+	{
+		timePoint.value() += 21ms;
+		stream << gcpp::nice::time::asISO8601{timePoint.value(), true};
+		REQUIRE(stream.str() == "2020-01-04 10:43:44.021");
+	}
+	SECTION("With milliseconds and leading 00")
+	{
+		timePoint.value() += 1ms;
+		stream << gcpp::nice::time::asISO8601{timePoint.value(), true};
+		REQUIRE(stream.str() == "2020-01-04 10:43:44.001");
+	}
+	SECTION("With milliseconds and fill with 0")
+	{
+		stream << gcpp::nice::time::asISO8601{timePoint.value(), true};
+		REQUIRE(stream.str() == "2020-01-04 10:43:44.000");
+	}
+	SECTION("Check for malformed format")
+	{
+		stream << gcpp::nice::time::asISO8601{timePoint.value(), true};
+		REQUIRE(stream.str() == "2020-01-04 10:43:44.000");
+		stream.str("");
+		stream << std::setw(3) << 21; // we shouldn't have leading 0
+		CHECK(stream.str() == " 21");
+	}
 }
 
 namespace my::other::name::space

@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <string_view>
 
+#include "gcpp/stream/StreamScopeFormat.hpp"
 #include "gcpp/string/to_string.hpp"
 
 using namespace std::chrono;
@@ -144,6 +145,12 @@ std::ostream& operator<<(std::ostream& stream, const nanoseconds& duration)
 std::ostream& operator<<(std::ostream& stream, const system_clock::time_point& time)
 {
 	return string::to_string::asISO8601(stream, time);
+}
+
+std::ostream& operator<<(std::ostream& os, const asISO8601& iso8601)
+{
+	string::to_string::asISO8601(os, iso8601.time, iso8601.withMilliseconds);
+	return os;
 }
 
 } // namespace gcpp::nice::time

@@ -122,10 +122,6 @@ public:
 		{
 			return _nominator == rhs._nominator;
 		}
-		else if(_nominator == rhs._nominator)
-		{
-			return _denominator == rhs._denominator;
-		}
 
 		return value() == rhs.value();
 	}

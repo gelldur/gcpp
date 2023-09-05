@@ -15,14 +15,14 @@ class [[nodiscard]] Percent
 public:
 	explicit Percent() // by default 0%
 		: _nominator{0}
-		, _denominator{1}
-		, _value(0)
-	{ }
+		  , _denominator{1}
+		  , _value(0)
+	{}
 
 	explicit constexpr Percent(const T& nominator, const T& denominator)
 		: _nominator(nominator)
-		, _denominator(denominator)
-		, _value((_nominator / _denominator))
+		  , _denominator(denominator)
+		  , _value((_nominator / _denominator))
 	{
 		if(_denominator == 0)
 		{
@@ -32,8 +32,8 @@ public:
 
 	explicit constexpr Percent(T&& nominator, T&& denominator)
 		: _nominator(std::forward<T>(nominator))
-		, _denominator(std::forward<T>(denominator))
-		, _value((_nominator / _denominator))
+		  , _denominator(std::forward<T>(denominator))
+		  , _value((_nominator / _denominator))
 	{
 		if(_denominator == 0)
 		{
@@ -43,28 +43,28 @@ public:
 
 	explicit constexpr Percent(T&& percentValue)
 		: _nominator(std::forward<T>(percentValue))
-		, _denominator(100.0)
-		, _value((_nominator / _denominator))
-	{ }
+		  , _denominator(100.0)
+		  , _value((_nominator / _denominator))
+	{}
 
 	Percent(const Percent& other)
 		: _nominator(other._nominator)
-		, _denominator(other._denominator)
-		, _value(other._value)
-	{ }
+		  , _denominator(other._denominator)
+		  , _value(other._value)
+	{}
 
 	Percent(Percent&& other) noexcept
 		: _nominator(std::move(other._nominator))
-		, _denominator(std::move(other._denominator))
-		, _value(std::move(other._value))
-	{ }
+		  , _denominator(std::move(other._denominator))
+		  , _value(std::move(other._value))
+	{}
 
 	template <typename E>
 	explicit Percent(const Percent<E>& other)
 		: _nominator(other.getNominator())
-		, _denominator(other.getDenominator())
-		, _value((_nominator / _denominator))
-	{ }
+		  , _denominator(other.getDenominator())
+		  , _value((_nominator / _denominator))
+	{}
 
 	Percent& operator=(const Percent& other)
 	{
@@ -208,9 +208,9 @@ public:
 	}
 
 	template <typename O>
-	O operator*(const O& rhs) const
+	Percent<T> operator*(const O& rhs) const
 	{
-		return value() * rhs;
+		return Percent{_nominator * rhs, _denominator};
 	}
 
 	Percent<T> operator-() const
@@ -246,8 +246,8 @@ inline Percent<T> multiply(const O& lhs, const Percent<T>& rhs)
 inline namespace percent_literals
 {
 
-Percent<long double> operator"" _bps(long double);
-Percent<long double> operator"" _bps(unsigned long long int);
+Percent<long double> operator "" _bps(long double);
+Percent<long double> operator "" _bps(unsigned long long int);
 
 } // namespace percent_literals
 

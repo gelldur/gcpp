@@ -50,15 +50,15 @@ TEST_CASE("Multiply by percent", "[math][Percent]")
 		const Percent<double> tenPercent{10};
 		const double value = 2;
 		REQUIRE(value * tenPercent == Approx(0.2).epsilon(0.001));
-		REQUIRE(value * tenPercent == tenPercent * value);
 	}
+
 	SECTION("Different underlying type")
 	{
 		const Percent<double> tenPercent{10};
 		const int value = 2;
 		REQUIRE(value * tenPercent == 0);
-		REQUIRE(value * tenPercent == tenPercent * value);
 	}
+
 	SECTION("Transitivity")
 	{
 		REQUIRE(2.F * Percent<double>{0.1} == Approx(0.002).epsilon(0.0001));
@@ -101,4 +101,12 @@ TEST_CASE("Percent / Percent", "[math][Percent]")
 	//		const Percent<int> b{65};
 	//		REQUIRE((a / b).value() == ?);
 	//	};
+}
+
+TEST_CASE("Percent * scalar", "[math][Percent]")
+{
+	const Percent<double> a{0.02}; // 0.02%
+	auto result = a * 10;
+	static_assert(std::is_same_v<decltype(result), Percent<double>>, "Expected same type");
+	CHECK(result.percentValue() == Approx(0.2).epsilon(0.001));
 }

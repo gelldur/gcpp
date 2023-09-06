@@ -23,6 +23,7 @@ add_library(gcpp
 	src/gcpp/math/Percent.h src/gcpp/math/Percent.cpp
 	src/gcpp/math/Point.h
 	src/gcpp/math/traits.h
+	src/gcpp/meta/get_arg.hpp
 	src/gcpp/nice/number.cpp src/gcpp/nice/number.hpp
 	src/gcpp/nice/time.cpp src/gcpp/nice/time.hpp
 	src/gcpp/nice/to_string.hpp
@@ -36,7 +37,7 @@ add_library(gcpp
 	src/gcpp/time.cpp src/gcpp/time.hpp
 	src/gcpp/type_name.h
 	src/gcpp/where.hpp
-	)
+)
 
 target_compile_definitions(gcpp PUBLIC WHERE_PROJECT_ROOT="${CMAKE_CURRENT_SOURCE_DIR}")
 

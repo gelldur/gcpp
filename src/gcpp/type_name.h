@@ -31,7 +31,7 @@ std::string type_name()
 		nullptr,
 #endif
 		std::free);
-	std::string r = own != nullptr ? own.get() : typeid(TR).name();
+	std::string r = (own != nullptr ? own.get() : typeid(TR).name());
 	if(std::is_const<TR>::value)
 	{
 		r += " const";

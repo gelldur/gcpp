@@ -3,21 +3,19 @@
 //
 #include "gcpp/nice/time.hpp"
 
-#include <array>
-#include <ctime>
+#include <sstream>
 #include <iomanip>
-#include <string_view>
 
 #include "gcpp/stream/StreamScopeFormat.hpp"
 #include "gcpp/string/to_string.hpp"
-
-using namespace std::chrono;
 
 namespace gcpp::nice::time
 {
 
 std::ostream& operator<<(std::ostream& out, const human& time)
 {
+	using namespace std::chrono;
+
 	std::stringstream stream;
 	auto variable = time.data;
 	const auto width = out.width();
@@ -107,27 +105,38 @@ std::ostream& operator<<(std::ostream& out, const human& time)
 	return out;
 }
 
-std::ostream& operator<<(std::ostream& stream, const hours& duration)
+std::ostream& operator<<(std::ostream& os, const asISO8601& iso8601)
+{
+	gcpp::string::to_string::asISO8601(os, iso8601.time, iso8601.withMilliseconds);
+	return os;
+}
+
+std::ostream& operator<<(std::ostream& stream, const std::chrono::system_clock::time_point& time)
+{
+	return gcpp::string::to_string::asISO8601(stream, time);
+}
+
+std::ostream& operator<<(std::ostream& stream, const std::chrono::hours& duration)
 {
 	return stream << duration.count() << "h";
 }
 
-std::ostream& operator<<(std::ostream& stream, const minutes& duration)
+std::ostream& operator<<(std::ostream& stream, const std::chrono::minutes& duration)
 {
-	return stream << duration.count() << "m";
+	return stream << duration.count() << "min";
 }
 
-std::ostream& operator<<(std::ostream& stream, const seconds& duration)
+std::ostream& operator<<(std::ostream& stream, const std::chrono::seconds& duration)
 {
 	return stream << duration.count() << "s";
 }
 
-std::ostream& operator<<(std::ostream& stream, const milliseconds& duration)
+std::ostream& operator<<(std::ostream& stream, const std::chrono::milliseconds& duration)
 {
 	return stream << duration.count() << "ms";
 }
 
-std::ostream& operator<<(std::ostream& stream, const microseconds& duration)
+std::ostream& operator<<(std::ostream& stream, const std::chrono::microseconds& duration)
 {
 	// From ASCII
 	// DEC		OCT		HEX		BIN			Symbol	HTML Number		HTML Name
@@ -137,20 +146,9 @@ std::ostream& operator<<(std::ostream& stream, const microseconds& duration)
 	return stream << duration.count() << "µs";
 }
 
-std::ostream& operator<<(std::ostream& stream, const nanoseconds& duration)
+std::ostream& operator<<(std::ostream& stream, const std::chrono::nanoseconds& duration)
 {
 	return stream << duration.count() << "ns";
-}
-
-std::ostream& operator<<(std::ostream& stream, const system_clock::time_point& time)
-{
-	return string::to_string::asISO8601(stream, time);
-}
-
-std::ostream& operator<<(std::ostream& os, const asISO8601& iso8601)
-{
-	string::to_string::asISO8601(os, iso8601.time, iso8601.withMilliseconds);
-	return os;
 }
 
 } // namespace gcpp::nice::time

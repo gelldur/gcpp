@@ -70,7 +70,6 @@ TEST_CASE("Should fail to parse time as ISO8601 When data is malformed", "[FromS
 
 TEST_CASE("Should parse time as ISO8601 with fraction", "[FromString]")
 {
-	USING_NICE_TIME;
 	// 1578143217000000000 -> 2020-01-04 13:06:57
 	SECTION("Format: 2020-01-04 13:06:57.344Z")
 	{

@@ -3,8 +3,6 @@ cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 # http://www.levelofindirection.com/journal/2010/12/28/unit-testing-in-c-and-objective-c-just-got-easier.html
 # Thanks for CATCH!
 
-set(CMAKE_CXX_STANDARD 17)
-
 # Dependencies
 enable_testing()
 

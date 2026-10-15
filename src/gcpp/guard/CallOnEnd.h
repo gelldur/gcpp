@@ -30,7 +30,7 @@ namespace gcpp::guard
 class CallOnEnd
 {
 public:
-	explicit CallOnEnd(std::function<void()> onDie) noexcept
+	explicit CallOnEnd(std::move_only_function<void()> onDie) noexcept
 		: _onDie(std::move(onDie))
 	{}
 	explicit CallOnEnd() noexcept = default;
@@ -52,7 +52,7 @@ public:
 	}
 
 private:
-	std::function<void()> _onDie;
+	std::move_only_function<void()> _onDie;
 };
 
 } // namespace gcpp::guard

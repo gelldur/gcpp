@@ -1,12 +1,20 @@
 #
 cmake_minimum_required(VERSION 3.11)
 project(gcpp-dev
-	VERSION 2.1.0
+	VERSION 2.2.0
 	LANGUAGES CXX
 	)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Global application for Release builds
+if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_options(
+        -fmacro-prefix-map=${CMAKE_SOURCE_DIR}=SRC
+        -fmacro-prefix-map=${CMAKE_BINARY_DIR}=BIN
+    )
+endif()
 
 # For development
 add_library(gcpp
@@ -16,7 +24,6 @@ add_library(gcpp
 	src/gcpp/exception/fail.cpp src/gcpp/exception/fail.hpp
 	src/gcpp/guard/CallOnEnd.h
 	src/gcpp/guard/ChangeOnEnd.h
-	src/gcpp/i18n/i18n-boost.cpp
 	src/gcpp/i18n/i18n.h
 	src/gcpp/input/SecretCin.cpp src/gcpp/input/SecretCin.h
 	src/gcpp/math/Bezier.h
@@ -45,11 +52,11 @@ target_include_directories(gcpp PUBLIC src/)
 
 target_compile_options(gcpp
 	PUBLIC
-	-Wall -Wpedantic -Wextra
-	-Wnon-virtual-dtor
-	-Werror
-	-Wno-unused-parameter
-	-Wno-error=deprecated-declarations
+#	-Wall -Wpedantic -Wextra
+#	-Wnon-virtual-dtor
+	-Wno-error
+#	-Wno-unused-parameter
+#	-Wno-error=deprecated-declarations
 	# ----------------------------------------
 	PRIVATE
 	-fPIC

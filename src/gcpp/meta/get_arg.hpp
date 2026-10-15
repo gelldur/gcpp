@@ -19,7 +19,7 @@ struct return_type<ReturnType (ClassType::*)(Args...) const>
 };
 
 // Example use:
-// using Return_t = return_type<decltype(callback)>;
+// using Return_t = typename gcpp::meta::return_type<decltype(callback)>::type;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -45,6 +45,9 @@ decltype(get_args(&F::operator())) get_args(F);
 
 template <typename F, std::size_t I>
 using get_arg = std::tuple_element_t<I, decltype(details::get_args(std::declval<F>()))>;
+
+template <typename F>
+inline constexpr std::size_t arg_count_v = std::tuple_size_v<decltype(details::get_args(std::declval<F>()))>;
 
 /*
     Example use:

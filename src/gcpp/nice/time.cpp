@@ -3,19 +3,19 @@
 //
 #include "gcpp/nice/time.hpp"
 
-#include <sstream>
 #include <iomanip>
+#include <sstream>
 
 #include "gcpp/stream/StreamScopeFormat.hpp"
 #include "gcpp/string/to_string.hpp"
+
+using namespace std::chrono;
 
 namespace gcpp::nice::time
 {
 
 std::ostream& operator<<(std::ostream& out, const human& time)
 {
-	using namespace std::chrono;
-
 	std::stringstream stream;
 	auto variable = time.data;
 	const auto width = out.width();
@@ -105,6 +105,82 @@ std::ostream& operator<<(std::ostream& out, const human& time)
 	return out;
 }
 
+std::ostream& operator<<(std::ostream& out, const natural& time)
+{
+	std::stringstream stream;
+	auto variable = time.d;
+	const auto width = out.width();
+	bool addSpace = false;
+	int countOfImportant = 0;
+
+	if(variable >= 24h)
+	{
+		++countOfImportant;
+		const auto only = duration_cast<hours>(variable) / 24h;
+		stream << std::setw(width) << only << "d";
+		variable -= (only * 24h);
+		addSpace = true;
+	}
+
+	auto processPart = [&](auto duration) {
+		if(variable < duration)
+		{
+			return false;
+		}
+
+		using Duration = decltype(duration);
+		++countOfImportant;
+		if(addSpace)
+		{
+			stream << out.fill();
+		}
+
+		if(countOfImportant >= 2) // in this case we round up as this is last significant
+		{
+			const auto only = ceil<Duration>(variable);
+			stream << std::setw(width) << only;
+			out << stream.str();
+			return true;
+		}
+		else
+		{
+			const auto only = duration_cast<Duration>(variable);
+			stream << std::setw(width) << only;
+			variable -= only;
+			addSpace = true;
+		}
+		return false;
+	};
+
+	if(processPart(1h))
+	{
+		return out;
+	}
+	if(processPart(1min))
+	{
+		return out;
+	}
+	if(processPart(1s))
+	{
+		return out;
+	}
+	if(processPart(1ms))
+	{
+		return out;
+	}
+	if(processPart(1us))
+	{
+		return out;
+	}
+	if(processPart(1ns))
+	{
+		return out;
+	}
+
+	out << stream.str();
+	return out;
+}
+
 std::ostream& operator<<(std::ostream& os, const asISO8601& iso8601)
 {
 	gcpp::string::to_string::asISO8601(os, iso8601.time, iso8601.withMilliseconds);
@@ -113,7 +189,7 @@ std::ostream& operator<<(std::ostream& os, const asISO8601& iso8601)
 
 std::ostream& operator<<(std::ostream& stream, const std::chrono::system_clock::time_point& time)
 {
-	return gcpp::string::to_string::asISO8601(stream, time);
+	return gcpp::string::to_string::asISO8601(stream, time, true);
 }
 
 std::ostream& operator<<(std::ostream& stream, const std::chrono::hours& duration)

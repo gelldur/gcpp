@@ -4,13 +4,85 @@
 #include "from_string.hpp"
 
 #include <cstdio>
+#include <iostream>
+#include <sstream>
+#include <string_view>
 
 namespace gcpp::string::from_string
 {
 
+#if __cplusplus >= 202002L // C++20
+
+class string_view_streambuf : public std::streambuf
+{
+public:
+	string_view_streambuf(std::string_view sv)
+	{
+		char* p = const_cast<char*>(sv.data());
+		setg(p, p, p + sv.size());
+	}
+};
+
+class string_view_istream : public std::istream
+{
+public:
+	string_view_istream(std::string_view sv)
+		: std::istream(&buf_)
+		, buf_(sv)
+	{ }
+
+private:
+	string_view_streambuf buf_;
+};
+
+std::optional<std::chrono::system_clock::time_point> parseTimeISO8601(std::string_view text)
+{
+	const std::array<std::string, 2> formats = {
+		"%Y-%m-%dT%H:%M:%S",
+		"%Y-%m-%d %H:%M:%S",
+	};
+	std::chrono::sys_time<std::chrono::seconds> tp;
+	for(const auto& f : formats)
+	{
+		string_view_istream is{text};
+		is >> std::chrono::parse(f, tp);
+
+		if(is.fail() == false)
+		{
+			return tp;
+		}
+	}
+	return std::nullopt;
+}
+
+std::optional<std::chrono::system_clock::time_point> parseTimeISO8601WithFraction(
+	std::string_view text)
+{
+	const std::array<std::string, 2> formats = {
+		"%Y-%m-%dT%H:%M:%S",
+		"%Y-%m-%d %H:%M:%S",
+	};
+
+	std::chrono::sys_time<std::chrono::milliseconds> tp;
+
+	for(const auto& f : formats)
+	{
+		string_view_istream is{text};
+		is >> std::chrono::parse(f, tp);
+
+		if(is.fail() == false)
+		{
+			return tp;
+		}
+	}
+	return std::nullopt;
+}
+
+#else
+
 // Example format: 2020-04-16T12:46:33Z
 static constexpr std::string_view format_ISO8601{"%d-%d-%d%*c%d:%d:%d"};
-static constexpr std::string_view format_ISO8601WithFraction{"%d-%d-%d%*c%d:%d:%d.%dZ"};
+// static constexpr std::string_view format_ISO8601WithFraction{"%d-%d-%d%*c%d:%d:%d.%dZ"};
 
 /** https://www.w3.org/TR/NOTE-datetime
    Year:
@@ -49,7 +121,7 @@ std::optional<std::chrono::system_clock::time_point> parseTimeISO8601(std::strin
 	// This code probably could be updated when C++20 arrives
 	tm parseTime{};
 
-	int y = 0, M = 0, d = 1, h = 0, m = 0, s = 0;
+	int y = -1, M = -1, d = -1, h = -1, m = -1, s = -1;
 	if(sscanf(text.data(), format_ISO8601.data(), &y, &M, &d, &h, &m, &s) != 6)
 	{
 		return std::nullopt;
@@ -85,7 +157,7 @@ std::optional<std::chrono::system_clock::time_point> parseTimeISO8601(std::strin
 	}
 
 	parseTime.tm_sec = s; // 0-61 (0-60 in C++11)
-	if(parseTime.tm_min < 0 || parseTime.tm_min > 61)
+	if(parseTime.tm_sec < 0 || parseTime.tm_sec > 61)
 	{
 		return std::nullopt;
 	}
@@ -98,30 +170,29 @@ std::optional<std::chrono::system_clock::time_point> parseTimeISO8601(std::strin
 std::optional<std::chrono::system_clock::time_point> parseTimeISO8601WithFraction(
 	std::string_view text)
 {
-	if(text.size() < std::size(format_ISO8601)) // We may skip millisecond part
+	auto t = parseTimeISO8601(text);
+	if(t.has_value() == false)
 	{
 		return std::nullopt;
 	}
 
-	// This code probably could be updated when C++20 arrives
-	tm parseTime{};
-
-	int y = 0, M = 0, d = 1, h = 0, m = 0, s = 0, ms = 0;
-	// We may skip parsing milliseconds when not available
-	if(sscanf(text.data(), format_ISO8601WithFraction.data(), &y, &M, &d, &h, &m, &s, &ms) < 6)
+	const auto fractionPosition = text.find('.');
+	if(fractionPosition != std::string_view::npos) // If we don't have millisecond part we may skip
 	{
-		return std::nullopt;
-	}
-	parseTime.tm_year = y - 1900; // Year since 1900
-	parseTime.tm_mon = M - 1; // 0-11
-	parseTime.tm_mday = d; // 1-31
-	parseTime.tm_hour = h; // 0-23
-	parseTime.tm_min = m; // 0-59
-	parseTime.tm_sec = s; // 0-61 (0-60 in C++11)
-	parseTime.tm_isdst = 0;
+		int ms = -1;
+		if(sscanf(text.substr(fractionPosition).data(), "%dZ", &ms) < 1)
+		{
+			return std::nullopt;
+		}
 
-	return std::chrono::system_clock::from_time_t(timegm(&parseTime)) +
-		   std::chrono::milliseconds{ms};
+		return *t + std::chrono::milliseconds{ms};
+	}
+	else
+	{
+		return t;
+	}
 }
+
+#endif
 
 } // namespace gcpp::string::from_string

@@ -76,15 +76,31 @@ std::vector<T> split(const T& str, const T& delimiters)
 	while(pos != T::npos)
 	{
 		if(pos != start)
-		{ // ignore empty tokens
-			v.emplace_back(str, start, pos - start);
+		{
+			// ignore empty tokens
+			if constexpr(std::is_same_v<T, std::string_view>)
+			{
+				v.emplace_back(str.substr(start, pos - start));
+			}
+			else
+			{
+				v.emplace_back(str, start, pos - start);
+			}
 		}
 		start = pos + 1;
 		pos = str.find_first_of(delimiters, start);
 	}
 	if(start < str.length())
-	{ // ignore trailing delimiter
-		v.emplace_back(str, start, str.length() - start);
+	{
+		// ignore trailing delimiter
+		if constexpr(std::is_same_v<T, std::string_view>)
+		{
+			v.emplace_back(str.substr(start, str.length() - start));
+		}
+		else
+		{
+			v.emplace_back(str, start, str.length() - start);
+		}
 	} // add what's left of the string
 	return v;
 }

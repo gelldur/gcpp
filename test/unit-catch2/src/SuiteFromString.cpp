@@ -1,7 +1,7 @@
 //
 // Created by gelldur on 04.01.2020.
 //
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 #include "gcpp/string/from_string.hpp"
 #include "gcpp/string/to_string.hpp"
@@ -20,6 +20,10 @@ TEST_CASE("Should parse time as ISO8601", "[FromString]")
 
 	CAPTURE(gcpp::string::from_string::parseTimeISO8601(DATE)->time_since_epoch().count());
 	REQUIRE(gcpp::string::from_string::parseTimeISO8601(DATE) == timePoint);
+
+	{
+		REQUIRE(gcpp::string::from_string::parseTimeISO8601("2020-01-04T13:06:57") == timePoint);
+	}
 }
 
 TEST_CASE("Should parse time as ISO8601 back and forth When using to_string and from_string",
@@ -81,6 +85,9 @@ TEST_CASE("Should parse time as ISO8601 with fraction", "[FromString]")
 		CAPTURE(gcpp::string::from_string::parseTimeISO8601WithFraction(DATE)
 					->time_since_epoch()
 					.count());
+		CAPTURE(timePoint.time_since_epoch().count());
+		// 1578143217000000000
+		// 1578143217344000000
 		REQUIRE(gcpp::string::from_string::parseTimeISO8601WithFraction(DATE) == timePoint);
 	}
 	SECTION("Format: 2020-01-04T13:06:57.344Z (with 'T')")
@@ -119,6 +126,9 @@ TEST_CASE("Should parse time When using fraction or not", "[FromString]")
 		const auto result = gcpp::string::from_string::parseTimeISO8601(DATE);
 		REQUIRE(result.has_value());
 		CAPTURE(result->time_since_epoch().count());
+		CAPTURE((timePoint - 344ms).time_since_epoch().count());
+		// 1578143217344000000
+		// 1578143217000000000
 		REQUIRE(result == (timePoint - 344ms)); // NO ms
 	}
 	SECTION("Format: 2020-01-04 13:06:57 parse with fraction")

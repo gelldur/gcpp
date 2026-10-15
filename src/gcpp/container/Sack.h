@@ -183,12 +183,12 @@ public:
 		return !(rhs == *this);
 	}
 
-	std::size_t size() const
+	[[nodiscard]] std::size_t size() const
 	{
 		return _data.size();
 	}
 
-	bool empty() const noexcept
+	[[nodiscard]] bool empty() const noexcept
 	{
 		return _data.empty();
 	}
@@ -198,6 +198,7 @@ public:
 		_data.clear();
 	}
 
+	// fixme this allows to change type of element. Maybe create attorney to access?
 	iterator find(const Type& searchType)
 	{
 		return std::find_if(_data.begin(), _data.end(), [searchType](const ValueAggregate& value) {

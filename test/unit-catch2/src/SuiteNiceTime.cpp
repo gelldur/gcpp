@@ -1,10 +1,11 @@
 //
 // Created by gelldur on 21.12.2019.
 //
+#include <format>
 #include <iomanip>
 #include <sstream>
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 #include "gcpp/nice/time.hpp"
 #include "gcpp/nice/to_string.hpp"
@@ -38,7 +39,7 @@ TEST_CASE("Should format as desired", "[NiceTime]")
 	CHECK(gcpp::nice::toString(gcpp::nice::time::human{1us}).size() == 4);
 	CHECK(gcpp::nice::toString(gcpp::nice::time::human{3ns}) == "3ns");
 	CHECK(gcpp::nice::toString(gcpp::nice::time::human{6ns + 5us + 4ms + 3s + 2min + 1h}) ==
-			  "1h 2min 3s 4ms 5µs 6ns");
+		  "1h 2min 3s 4ms 5µs 6ns");
 
 	{
 		stream.str("");
@@ -70,7 +71,6 @@ TEST_CASE("Should format as desired", "[NiceTime]")
 		stream << 6h;
 		CHECK(stream.str() == "6h");
 	}
-
 }
 
 TEST_CASE("Should format as UTC time point", "[NiceTime]")
@@ -81,11 +81,16 @@ TEST_CASE("Should format as UTC time point", "[NiceTime]")
 	std::stringstream stream;
 	stream << timePoint.value();
 
-	REQUIRE(stream.str() == "2020-01-04 10:43:44");
+	REQUIRE(stream.str() == "2020-01-04 10:43:44.000");
 }
 
 TEST_CASE("Should nice format as ISO8601", "[NiceTime]")
 {
+	// "2020-01-04 10:43:44"
+	// "2020-01-04 10:43:44.321"
+	// "2020-01-04T10:43:44.321"
+	// "2020-01-04T10:43:44"
+
 	auto timePoint = gcpp::string::from_string::parseTimeISO8601("2020-01-04 10:43:44");
 	REQUIRE(timePoint.has_value());
 
@@ -95,26 +100,31 @@ TEST_CASE("Should nice format as ISO8601", "[NiceTime]")
 		timePoint.value() += 321ms;
 		stream << gcpp::nice::time::asISO8601{timePoint.value()};
 		REQUIRE(stream.str() == "2020-01-04 10:43:44");
-	} SECTION("With milliseconds")
+	}
+	SECTION("With milliseconds")
 	{
 		timePoint.value() += 321ms;
 		stream << gcpp::nice::time::asISO8601{timePoint.value(), true};
 		REQUIRE(stream.str() == "2020-01-04 10:43:44.321");
-	} SECTION("With milliseconds and leading 0")
+	}
+	SECTION("With milliseconds and leading 0")
 	{
 		timePoint.value() += 21ms;
 		stream << gcpp::nice::time::asISO8601{timePoint.value(), true};
 		REQUIRE(stream.str() == "2020-01-04 10:43:44.021");
-	} SECTION("With milliseconds and leading 00")
+	}
+	SECTION("With milliseconds and leading 00")
 	{
 		timePoint.value() += 1ms;
 		stream << gcpp::nice::time::asISO8601{timePoint.value(), true};
 		REQUIRE(stream.str() == "2020-01-04 10:43:44.001");
-	} SECTION("With milliseconds and fill with 0")
+	}
+	SECTION("With milliseconds and fill with 0")
 	{
 		stream << gcpp::nice::time::asISO8601{timePoint.value(), true};
 		REQUIRE(stream.str() == "2020-01-04 10:43:44.000");
-	} SECTION("Check for malformed format")
+	}
+	SECTION("Check for malformed format")
 	{
 		stream << gcpp::nice::time::asISO8601{timePoint.value(), true};
 		REQUIRE(stream.str() == "2020-01-04 10:43:44.000");
@@ -139,4 +149,81 @@ void testInNameSpace()
 TEST_CASE("Should format as desired #2", "[NiceTime]")
 {
 	my::other::name::space::testInNameSpace();
+}
+
+TEST_CASE("Should format system_clock::time_point", "[NiceTime]")
+{
+	SECTION("With fraction")
+	{
+		const auto timePoint =
+			gcpp::string::from_string::parseTimeISO8601WithFraction("2020-01-04 10:43:44.321");
+		REQUIRE(timePoint.has_value());
+
+		{
+			std::stringstream stream;
+			stream << timePoint.value();
+			REQUIRE(stream.str() == "2020-01-04 10:43:44.321");
+		}
+		{
+			std::string s = std::format("{}", *timePoint);
+			REQUIRE(s == "2020-01-04 10:43:44.321000000");
+		}
+		{
+			std::string s = std::format("{:%Y-%m-%d %H:%M:%S}", *timePoint);
+			REQUIRE(s == "2020-01-04 10:43:44.321000000");
+		}
+		{
+			std::string s =
+				std::format("{:%F %T}",
+							std::chrono::sys_time<std::chrono::milliseconds>{
+								std::chrono::floor<std::chrono::milliseconds>(timePoint.value())});
+			REQUIRE(s == "2020-01-04 10:43:44.321");
+		}
+	}
+	SECTION("No fraction '0'")
+	{
+		{
+			const auto timePoint =
+				gcpp::string::from_string::parseTimeISO8601WithFraction("2020-01-04 10:43:44.");
+			REQUIRE(timePoint.has_value());
+
+			{
+				std::stringstream stream;
+				stream << timePoint.value();
+				REQUIRE(stream.str() == "2020-01-04 10:43:44.000");
+			}
+			{
+				std::stringstream stream;
+				stream << std::chrono::sys_time{
+					std::chrono::floor<std::chrono::milliseconds>(timePoint.value())};
+				REQUIRE(stream.str() == "2020-01-04 10:43:44.000");
+			}
+			{
+				std::string s = std::format("{}", *timePoint);
+				REQUIRE(s == "2020-01-04 10:43:44.000000000");
+			}
+		}
+		{
+			const auto timePoint =
+				gcpp::string::from_string::parseTimeISO8601WithFraction("2020-01-04 10:43:44");
+			REQUIRE(timePoint.has_value());
+
+			{
+				std::stringstream stream;
+				stream << timePoint.value();
+				REQUIRE(stream.str() == "2020-01-04 10:43:44.000");
+			}
+		}
+		{
+			const auto timePoint =
+				gcpp::string::from_string::parseTimeISO8601WithFraction("2020-01-04 10:43:44.000");
+			REQUIRE(timePoint.has_value());
+
+			{
+				std::stringstream stream;
+				stream << timePoint.value();
+				REQUIRE(stream.str() == "2020-01-04 10:43:44.000");
+			}
+		}
+	}
 }
